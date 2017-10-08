@@ -1,0 +1,28 @@
+<div class="box box-default" ng-init="init()">
+<div class="box-body">
+    <div kendo-grid="kneadingCommandsGrid"
+         options="mainGridOptions" k-rebind="mainGridOptions">
+    </div>
+</div>
+</div>
+
+<button class="btn btn-primary" ng-click="loadCommands()">Load</button>
+
+<style>
+    .contact-info-form {
+        list-style-type: none;
+        margin: 30px 0;
+        padding: 0;
+    }
+
+    .contact-info-form li {
+        margin: 10px 0;
+    }
+
+    .contact-info-form label {
+        display: inline-block;
+        width: 100px;
+        text-align: right;
+        font-weight: bold;
+    }
+</style>
