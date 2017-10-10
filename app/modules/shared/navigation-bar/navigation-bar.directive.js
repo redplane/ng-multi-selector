@@ -9,7 +9,7 @@ angular.module('app.shared')
             scope: null,
             link: function (scope, element, attrs, controller) {
             },
-            controller: ['$scope', function ($scope) {
-            }]
+            controller: function ($scope) {
+            }
         };
     });

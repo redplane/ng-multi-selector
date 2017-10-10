@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <!--[if lt IE 7]>
-<html lang="en" ng-app="ngKcsp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<html lang="en" ng-app="ngAppRoot" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>
-<html lang="en" ng-app="ngKcsp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<html lang="en" ng-app="ngAppRoot" class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>
-<html lang="en" ng-app="ngKcsp" class="no-js lt-ie9"> <![endif]-->
+<html lang="en" ng-app="ngAppRoot" class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html lang="en" ng-app="ngKcsp" class="no-js"> <!--<![endif]-->
+<html lang="en" ng-app="ngAppRoot" class="no-js"> <!--<![endif]-->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>KCSP</title>
+    <title>ngx-multi-selector</title>
     <meta name="description" content="">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,15 +25,12 @@
     <!--Font awesome-->
     <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.min.css">
 
-    <!--Kendo UI-->
-    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.3.913/styles/kendo.common-bootstrap.min.css" />
-    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.3.913/styles/kendo.bootstrap.min.css" />
-    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.3.913/styles/kendo.bootstrap.mobile.min.css" />
-
     <!--AdminLTE-->
     <link rel="stylesheet" href="bower_components/AdminLTE/dist/css/AdminLTE.min.css">
     <link rel="stylesheet" href="bower_components/AdminLTE/dist/css/skins/skin-green-light.min.css">
 
+    <!--ngx-multi-selector-->
+    <link rel="stylesheet" href="directives/ng-multi-selector/ng-multi-selector.directive.css">
 </head>
 <body>
 <!--[if lt IE 7]>
@@ -42,7 +39,7 @@
 <![endif]-->
 
 <div>Angular seed app: v</div>
-<a ui-sref="input-kneading-command" ui-sref-active="active">Input kneading command</a>
+<a ui-sref="basic-initialization" ui-sref-active="active">Input kneading command</a>
 <a ui-sref="start-stop-kneading-command" ui-sref-active="active">Start/stop kneading command</a>
 <ui-view></ui-view>
 </body>
@@ -59,6 +56,7 @@
 <!--JQuery plugins-->
 <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+<script type="text/javascript" src="bower_components/rxjs/dist/rx.all.min.js"></script>
 
 <!--App-->
 <script type="text/javascript" src="bower_components/AdminLTE/dist/js/app.min.js"></script>
@@ -68,27 +66,31 @@
 
 <!--Angular plugins-->
 <script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-<script src="https://kendo.cdn.telerik.com/2017.3.913/js/kendo.all.min.js"></script>
 
 <!--Services-->
 <script type="text/javascript" src="services/service.declaration.js"></script>
-<script type="text/javascript" src="services/kneading-command.service.js"></script>
+<script type="text/javascript" src="services/storage.service.js"></script>
+<script type="text/javascript" src="services/customer.service.js"></script>
 
-<!--Shared modules-->
+<!--Constants-->
+<script type="text/javascript" src="constants/constants.declaration.js"></script>
+<script type="text/javascript" src="constants/appSettings.constant.js"></script>
+
+<!--Modules-->
 <script type="text/javascript" src="modules/shared/shared.module.js"></script>
-<script type="text/javascript" src="modules/shared/shared.routing.js"></script>
+<script type="text/javascript" src="modules/demo/demo.module.js"></script>
 
-<script type="text/javascript" src="modules/shared/navigation-bar/navigation-bar.component.js"></script>
+<!--Directives-->
+<script type="text/javascript" src="modules/shared/navigation-bar/navigation-bar.directive.js"></script>
 <script type="text/javascript" src="modules/shared/side-bar/side-bar.directive.js"></script>
+<script type="text/javascript" src="directives/ng-multi-selector/ng-multi-selector.directive.js"></script>
 
-<!--Kneading command management-->
-<script type="text/javascript" src="modules/kneading-command-management/kneading-command-management.module.js"></script>
-<script type="text/javascript"
-        src="modules/kneading-command-management/input-kneading-command/input-kneading-command.component.js"></script>
-<script type="text/javascript"
-        src="modules/kneading-command-management/start-stop-kneading-command/start-stop-kneading-command.component.js"></script>
-<script type="text/javascript"
-        src="modules/kneading-command-management/kneading-command-management.routing.js"></script>
+<!--Controllers-->
+<script type="text/javascript" src="modules/demo/basic-initialization/basic-initialization.controller.js"></script>
+
+<!--Modules routing-->
+<script type="text/javascript" src="modules/shared/shared.routing.js"></script>
+<script type="text/javascript" src="modules/demo/demo.routing.js"></script>
 
 <!--AngularJS bootstrap-->
 <script type="text/javascript" src="app.js"></script>

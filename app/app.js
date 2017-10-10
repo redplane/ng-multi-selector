@@ -1,14 +1,15 @@
 'use strict';
 
 // Declare app level module which depends on views, and modules
-angular.module('ngKcsp', [
-    'ui.router',
-    'app.shared',
-    'app.kneadingCommandManagement'
-])
-    .config([
-        '$locationProvider',
-        '$stateProvider',
-        function ($locationProvider, $stateProvider) {
+angular.module('ngAppRoot',
+    [
+        'ui.router',
+        'app.constant',
+        'app.shared',
+        'app.module.demo',
+        'ng-multi-selector'
+    ])
+    .config(
+        function ($locationProvider) {
             $locationProvider.hashPrefix('!');
-        }]);
+        });

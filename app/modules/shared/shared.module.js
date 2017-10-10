@@ -1,4 +1,1 @@
-angular.module('app.shared', [
-    'ui.router',
-    'app.service'
-]);
+angular.module('app.shared', ['ui.router', 'app.service']);

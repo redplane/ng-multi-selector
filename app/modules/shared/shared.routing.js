@@ -1,8 +1,7 @@
 "use strict";
 
 angular.module('app.shared')
-    .config([
-        '$stateProvider',
+    .config(
         function ($stateProvider) {
 
             // Authorize layout.
@@ -18,4 +17,4 @@ angular.module('app.shared')
             });
 
         }
-    ]);
+    );
