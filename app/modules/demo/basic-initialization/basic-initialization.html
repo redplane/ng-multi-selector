@@ -11,12 +11,15 @@
                            display-property="'firstName'"
                            placeholder-search="'Enter a first name to search.'"
                            auto-close="false"
+                           is-clear-button-available="true"
                            interval="500"
                            ng-model="chosenItems"
                            is-search-box-available="options.isSearchBoxAvailable"
                            ng-search-items="search(keyword)"
-
+                           custom-item-template="true"
+                           
                            required="required" >
+            <a>{{item.firstName}} - {{item.lastName}}</a>
         </ng-multi-selector>
     </div>
 

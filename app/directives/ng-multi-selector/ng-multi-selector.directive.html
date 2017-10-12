@@ -39,17 +39,23 @@
                     </div>
                 </div>
             </li>
-            <li ng-repeat="item in items | limitTo: limitItemAmount"
+
+            <!--Default item template-->
+            <li ng-if="!customItemTemplate"
+                ng-repeat="item in items | limitTo: limitItemAmount"
                 ng-click="selectItem(item)"
                 ng-class="{'active': getItemSelected(item) !== -1}">
-                <a ng-if="displayProperty && displayProperty.length > 0"
-                   href="javascript:void(0)">
-                    {{item[displayProperty]}}
+                <a href="javascript:void(0);">
+                    {{getItemDisplay(item)}}
                 </a>
-                <a ng-if="!displayProperty || displayProperty.length < 1"
-                   href="javascript:void(0)">
-                    {{item}}
-                </a>
+            </li>
+
+            <!--Custom item template-->
+            <li ng-if="customItemTemplate"
+                ng-repeat="item in items | limitTo: limitItemAmount"
+                ng-click="selectItem(item)"
+                ng-class="{'active': getItemSelected(item) !== -1}"
+                inject>
             </li>
         </ul>
     </div>

@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('ng-multi-selector', [])
+angular.module('ng-multi-selector')
     .directive('ngMultiSelector', function () {
         return {
             restrict: 'E',
             templateUrl: 'directives/ng-multi-selector/ng-multi-selector.directive.html',
-            transclude: false,
+            transclude: {},
             replace: false,
             require: 'ngModel',
             scope: {
@@ -21,7 +21,8 @@ angular.module('ng-multi-selector', [])
                 limitItemAmount: '=',// Number of items which should be shown up in drop-down list.
                 isClearButtonAvailable: '=',// Whether clear button is visible or not.
                 isSearchBoxAvailable: '=',//Whether search box is available or not.
-                interval: '=',//Search box de-bounced time.
+                interval: '=',// Search box de-bounced time.
+                customItemTemplate: '=',// Whether custom template is supported or not.
 
                 ngSearchItems: '&'//Raised when component wants to search for a keyword.
             },
@@ -41,20 +42,22 @@ angular.module('ng-multi-selector', [])
                 * Watch item for changes.
                 * */
                 scope.$watch(
-                    function () {return ngModel.$modelValue;},
+                    function () {
+                        return ngModel.$modelValue;
+                    },
                     function (value) {
-                    if (value instanceof Array){
-                        if (value.length < 1){
-                            ngModel.$setViewValue(null);
-                            scope.chosenItems = null;
+                        if (value instanceof Array) {
+                            if (value.length < 1) {
+                                ngModel.$setViewValue(null);
+                                scope.chosenItems = null;
+                            } else {
+                                scope.chosenItems = value;
+                            }
                         } else {
                             scope.chosenItems = value;
                         }
-                    } else {
-                        scope.chosenItems = value;
-                    }
 
-                }, true);
+                    }, true);
 
                 /*
                 * Clear chosen items from list.
@@ -113,7 +116,7 @@ angular.module('ng-multi-selector', [])
                 /*
                 *
                 * */
-                $scope.initSearchBox = function(){
+                $scope.initSearchBox = function () {
 
                     // Find search box.
                     let oSearchBox = $element.find('.ng-multi-selector-search-box').first();
@@ -224,7 +227,39 @@ angular.module('ng-multi-selector', [])
                     if (!$scope.autoClose)
                         event.stopPropagation();
                 };
+
+                /*
+                * Get item display
+                * */
+                $scope.getItemDisplay = function (item) {
+                    if (!$scope.displayProperty || $scope.displayProperty.length < 1)
+                        return item;
+
+                    return item[$scope.displayProperty];
+                };
                 //#endregion
+            }
+        };
+    })
+    .directive('inject', function () {
+        return {
+            link: function ($scope, $element, $attrs, controller, $transclude) {
+
+                if (!$transclude) {
+                    throw minErr('ngTransclude')('orphan',
+                        'Illegal use of ngTransclude directive in the template! ' +
+                        'No parent directive that requires a transclusion found. ' +
+                        'Element: {0}',
+                        startingTag($element));
+                }
+                let innerScope = $scope.$new();
+                $transclude(innerScope, function (clone) {
+                    $element.empty();
+                    $element.append(clone);
+                    $element.on('$destroy', function () {
+                        innerScope.$destroy();
+                    });
+                });
             }
         };
     });
