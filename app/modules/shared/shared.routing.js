@@ -7,7 +7,7 @@ angular.module('app.shared')
             // Authorize layout.
             $stateProvider.state('authorize', {
                 abstract: true,
-                template: '<ui-view></ui-view>'
+                templateUrl: 'modules/shared/authorize-layout/authorize-layout.component.html'
             });
 
             // Unauthorize layout.

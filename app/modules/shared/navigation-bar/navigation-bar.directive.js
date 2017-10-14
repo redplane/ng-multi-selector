@@ -3,9 +3,9 @@
 angular.module('app.shared')
     .directive('navigationBar', function () {
         return {
-            restrict: 'E',
-            templateUrl: 'modules/shared/navigation-bar/navigation-bar.directive.html',
-            replace: true,
+            restrict: 'AE',
+            templateUrl: '/modules/shared/navigation-bar/navigation-bar.directive.html',
+            replace: false,
             scope: null,
             link: function (scope, element, attrs, controller) {
             },

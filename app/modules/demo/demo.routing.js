@@ -10,7 +10,8 @@ angular.module('app.module.demo')
             $stateProvider.state('basic-initialization', {
                 url: '/basic-initialization',
                 templateUrl: 'modules/demo/basic-initialization/basic-initialization.html',
-                controller: 'basicInitializationController'
+                controller: 'basicInitializationController',
+                parent: 'authorize'
             });
 
             //#endregion

@@ -3,7 +3,7 @@
 angular.module('app.shared')
     .directive('sideBar', function () {
         return {
-            restrict: 'E',
+            restrict: 'AE',
             templateUrl: 'modules/shared/side-bar/side-bar.directive.html',
             replace: true,
             scope: null,
