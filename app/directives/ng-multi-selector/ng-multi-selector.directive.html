@@ -44,7 +44,7 @@
             <li ng-if="!customItemTemplate"
                 ng-repeat="item in items | limitTo: limitItemAmount"
                 ng-click="selectItem(item)"
-                ng-class="{'active': getItemSelected(item) !== -1}">
+                ng-class="{'{{getActiveClass()}}' : getItemSelected(item) !== -1}">
                 <a href="javascript:void(0);">
                     {{getItemDisplay(item)}}
                 </a>
@@ -54,7 +54,7 @@
             <li ng-if="customItemTemplate"
                 ng-repeat="item in items | limitTo: limitItemAmount"
                 ng-click="selectItem(item)"
-                ng-class="{'active': getItemSelected(item) !== -1}"
+                ng-class="{'{{getActiveClass()}}': getItemSelected(item) !== -1}"
                 inject>
             </li>
         </ul>

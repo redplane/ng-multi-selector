@@ -1,11 +1,12 @@
 'use strict';
 
-angular.module('ng-multi-selector')
+angular.module('ng-multi-selector', [])
     .directive('ngMultiSelector', function () {
         return {
             restrict: 'E',
             templateUrl: 'directives/ng-multi-selector/ng-multi-selector.directive.html',
-            transclude: {},
+            css: './ng-multi-selector/ng-multi-selector.directive.css',
+            transclude: true,
             replace: false,
             require: 'ngModel',
             scope: {
@@ -23,6 +24,7 @@ angular.module('ng-multi-selector')
                 isSearchBoxAvailable: '=',//Whether search box is available or not.
                 interval: '=',// Search box de-bounced time.
                 customItemTemplate: '=',// Whether custom template is supported or not.
+                activeClass: '=?',// Class which will be added when item is active.
 
                 ngSearchItems: '&'//Raised when component wants to search for a keyword.
             },
@@ -236,6 +238,18 @@ angular.module('ng-multi-selector')
                         return item;
 
                     return item[$scope.displayProperty];
+                };
+
+                /*
+                * Get active class.
+                * */
+                $scope.getActiveClass = function(){
+                    // Active class is not defined.
+                    if (!$scope.activeClass){
+                        return 'active';
+                    }
+
+                    return $scope.activeClass;
                 };
                 //#endregion
             }
