@@ -3,6 +3,7 @@
 // Declare app level module which depends on views, and modules
 angular.module('ngAppRoot',
     [
+        'ngRoute',
         'ui.router',
         'app.constant',
         'app.shared',
@@ -10,6 +11,7 @@ angular.module('ngAppRoot',
         'ng-multi-selector'
     ])
     .config(
-        function ($locationProvider) {
+        function ($locationProvider, $stateProvider, $routeProvider, urlStates) {
             $locationProvider.hashPrefix('!');
+            $routeProvider.otherwise({redirectTo: urlStates.demo.url});
         });

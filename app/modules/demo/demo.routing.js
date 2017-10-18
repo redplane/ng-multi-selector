@@ -2,15 +2,15 @@
 
 angular.module('app.module.demo')
     .config(
-        function ($stateProvider) {
+        function ($stateProvider, urlStates) {
 
             //#region Methods
 
             // Basic initialization.
-            $stateProvider.state('basic-initialization', {
-                url: '/basic-initialization',
-                templateUrl: 'modules/demo/basic-initialization/basic-initialization.html',
-                controller: 'basicInitializationController',
+            $stateProvider.state(urlStates.demo.name, {
+                url: urlStates.demo.url,
+                templateUrl: 'modules/demo/demo.html',
+                controller: 'demoController',
                 parent: 'authorize'
             });
 
