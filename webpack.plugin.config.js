@@ -2,6 +2,9 @@ var path = require('path');
 var webpack = require('webpack');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var NodeExternals = require('webpack-node-externals');
+var MergeIntoSingleFilePlugin = require('webpack-merge-and-include-globally');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 // Resolve source code directory.
 var pathSourceCode = path.resolve(__dirname, 'src');
@@ -15,14 +18,22 @@ var pathDistribution = path.resolve(pathSourceCode, 'plugin-dist');
 module.exports = {
     context: pathSourceCode,
     entry: {
-        'ng-multi-selector': path.resolve(pathNgMultiSelector, 'ng-multi-selector.directive.js')
+        'index': path.resolve(pathNgMultiSelector, 'index.js')
     },
+    externals: [NodeExternals()],
     module: {
         rules: [
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader'],
-                exclude: /(node_modules)/
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: {
+                        loader: 'css-loader',
+                        options: {
+                            minimize: true
+                        }
+                    }
+                })
             },
             {
                 test: /\.(png|jpg|gif|woff|woff2|eot|ttf|svg)$/,
@@ -36,24 +47,14 @@ module.exports = {
                 ]
             },
             {
-                test: /\.html$/, // Only .html files
-                loader: 'html-loader' // Run html loader
-            },
-            {
                 test: /\.js$/,
-                exclude: /(node_modules)/,
+                exclude: /node_modules\\/,
                 use: {
                     loader: 'babel-loader',
                     options: {
                         presets: ['es2015']
                     }
                 }
-            },
-            {
-                // I want to uglify with mangling only app files, not thirdparty libs
-                test: /.*\/app\/.*\.js$/,
-                exclude: [/node_modules/],
-                loader: "uglify"
             }
         ]
     },
@@ -87,28 +88,42 @@ module.exports = {
                 // Default: false - don't allow clean folder outside of the webpack root
                 allowExternal: false
             }),
-        new CopyWebpackPlugin([
-            {
-                from: {
-                    glob: pathNgMultiSelector + '/**/*.css'
-                },
-                to: path.resolve(pathDistribution),
-                flatten: true
+        new MergeIntoSingleFilePlugin({
+            files: {
+                'ng-multi-selector.min.js': [
+                    path.resolve(pathNgMultiSelector, 'ng-multi-selector.js')
+                ]
+            },
+            transform: {
+                'ng-multi-selector.min.js': function (code) {
+                    return require("uglify-js").minify(code).code
+                }
             }
-        ]),
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            },
+            output: {
+                comments: false
+            }
+        }),
+        new ExtractTextPlugin('ng-multi-selector.min.css'),
         new webpack.optimize.CommonsChunkPlugin({
-            name: 'ng-multi-selector',
+            name: 'index',
             minChunks: Infinity
         }),
-        new webpack.ProvidePlugin({
-            '$': 'jquery',
-            'jQuery': 'jquery',
-            'angular': 'angular',
-            'Rx': 'rx'
+        new CopyWebpackPlugin([
+            {
+                from: pathNgMultiSelector,
+                to: pathDistribution
+            }
+        ], {
+            ignore: ['index.js']
         })
     ],
     output: {
         path: pathDistribution,
-        filename: '[name].min.js'
+        filename: '[name].js'
     }
 };
