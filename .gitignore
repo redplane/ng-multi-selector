@@ -7,3 +7,5 @@ tmp
 .idea
 /package-lock.json
 /*.log
+/src/dist
+/src/plugin-dist

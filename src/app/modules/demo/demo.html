@@ -1,0 +1,90 @@
+<!--Dependencies-->
+<div class="row form-group">
+    <div class="col-lg-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">Dependencies</div>
+            <div class="panel-body">
+                <ul>
+                    <li>
+                        <a href="https://github.com/Reactive-Extensions/RxJS">Reactive extension.</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Options-->
+<div class="row form-group">
+    <div class="col-lg-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">Options</div>
+            <div class="panel-body" ng-include
+                 src="'/html-templates/demo/options/options.html'">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Events-->
+<div class="row form-group">
+    <div class="col-lg-12">
+        <div class="panel panel-danger">
+            <div class="panel-heading">Events</div>
+            <div class="panel-body" ng-include
+                 src="'/html-templates/demo/events/events.html'"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row form-group" ng-init="init()">
+    <div class="col-lg-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Example</div>
+            <div class="panel-body">
+                <div class="row form-group">
+                    <div class="col-lg-6">
+                        <div>
+                            <label>Basic</label>
+                            <ng-multi-selector items="customers"
+                                               display-property="'email'"
+                                               ng-model="chosenCustomers"></ng-multi-selector>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <code>
+                            &lt;ng-multi-selector   items=&#34;customers&#34;&#10;
+                            display-property=&#34;'email'&#34;&#10;
+                            ng-model=&#34;chosenCustomers&#34;&gt;&#10;
+                            &lt;/ng-multi-selector&gt;
+                        </code>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-lg-6">
+                        <label>Custom item template</label>
+                        <ng-multi-selector items="customers"
+                                           display-property="'email'"
+                                           ng-model="chosenCustomers"
+                                           custom-item-template="true">
+                            <a href="javascript:void(0);">
+                                <b>{{item.firstName}}</b> <span>{{item.lastName}}</span>
+                            </a>
+                        </ng-multi-selector>
+                    </div>
+                    <div class="col-lg-6">
+                        <code>&lt;ng-multi-selector items="customers"
+                            display-property="'email'"
+                            ng-model="chosenCustomers"
+                            custom-item-template="true"&gt;
+                            &lt;a href="javascript:void(0);"&gt;
+                            &lt;b&gt;{{item.firstName}}&lt;/b&gt; &lt;span&gt;{{item.lastName}}&lt;/span&gt;
+                            &lt;/a&gt;
+                            &lt;/ng-multi-selector&gt;</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
