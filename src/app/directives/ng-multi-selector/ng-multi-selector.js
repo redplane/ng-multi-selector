@@ -100,7 +100,7 @@ angular.module('ng-multi-selector', [])
 
                 //#endregion
             },
-            controller: function ($scope, $element) {
+            controller: function ($scope, $element, $timeout) {
                 //#region Properties
 
                 // Chosen items in multi selector.
@@ -119,31 +119,29 @@ angular.module('ng-multi-selector', [])
                     $scope.instance = this;
                 };
 
-                /*
-                *
-                * */
                 $scope.initSearchBox = function () {
+                    $timeout(function(){
+                        // Find search box.
+                        var oSearchBox = $element[0].getElementsByClassName('ng-multi-selector-search-box')[0];
 
-                    // Find search box.
-                    var oSearchBox = $element.find('.ng-multi-selector-search-box').first();
+                        // Find interval.
+                        var iInterval = $scope.interval;
+                        if (!iInterval || iInterval < 400)
+                            iInterval = 400;
 
-                    // Find interval.
-                    var iInterval = $scope.interval;
-                    if (!iInterval || iInterval < 400)
-                        iInterval = 400;
-
-                    Rx.Observable.fromEvent(oSearchBox, 'keyup')
-                        .pluck('target', 'value')
-                        .map(function (x) {
-                            if (x)
-                                return x.trim();
-                            return x;
-                        })
-                        .debounce(iInterval)
-                        .distinctUntilChanged()
-                        .subscribe(function (x) {
-                            $scope.ngSearchItems({keyword: x});
-                        });
+                        Rx.Observable.fromEvent(oSearchBox, 'keyup')
+                            .pluck('target', 'value')
+                            .map(function (x) {
+                                if (x)
+                                    return x.trim();
+                                return x;
+                            })
+                            .debounce(iInterval)
+                            .distinctUntilChanged()
+                            .subscribe(function (x) {
+                                $scope.ngSearchItems({keyword: x});
+                            });
+                    });
                 };
 
                 /**

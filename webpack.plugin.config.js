@@ -117,6 +117,10 @@ module.exports = {
             {
                 from: pathNgMultiSelector,
                 to: pathDistribution
+            },
+            {
+                from: path.resolve(__dirname, 'readme.md'),
+                to: pathDistribution
             }
         ], {
             ignore: ['index.js']

@@ -1,7 +1,7 @@
 {
   "name": "ng-multi-selector",
-  "version": "1.0.1",
-  "description": "Changed absolute path to relative path in template.",
+  "version": "1.0.2",
+  "description": "Webpack integrated. Template is used instead of templateUrl.",
   "main": "ng-multi-selector.directive.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

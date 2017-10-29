@@ -1,34 +1,48 @@
 "use strict";
 
-module.exports = function(ngModule){
-  ngModule.controller('demoController', function($scope, customerService){
-      //#region Methods
+module.exports = function (ngModule) {
+    ngModule.controller('demoController',
+        function ($scope, customerService) {
+        //#region Methods
 
-      /*
-      * List of items
-      * */
-      $scope.customers = null;
+        /*
+        * List of items
+        * */
+        $scope.customers = null;
 
-      /*
-      * List of chosen customers.
-      * */
-      $scope.chosenCustomers = null;
+        /*
+        * List of chosen customers.
+        * */
+        $scope.chosenCustomers = null;
 
-      //#endregion
+        /*
+        * List of messages which should be displayed.
+        * */
+        $scope.messages = [];
 
-      //#region Methods
+        //#endregion
 
-      /*
-      * Called when component has been initiated successfully.
-      * */
-      $scope.init = function(){
+        //#region Methods
 
-          // Get customers list.
-          customerService.getLocalItems().then(function(x) {
-              $scope.customers = x;
-      });
-      };
+        /*
+        * Called when component has been initiated successfully.
+        * */
+        $scope.init = function () {
 
-      //#endregion
-  })  ;
+            // Get customers list.
+            customerService.getLocalItems().then(function (x) {
+                $scope.customers = x;
+            });
+        };
+
+        /*
+        * Event which will be emitted when keyword is entered.
+        * */
+        $scope.getApiItems = function(keyword){
+            var szMessage = 'Key word has been emitted: ' + keyword;
+            // Initiate a new message.
+            $scope.messages.push(szMessage);
+        };
+        //#endregion
+    });
 };
