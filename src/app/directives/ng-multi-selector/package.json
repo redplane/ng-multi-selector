@@ -1,7 +1,7 @@
 {
   "name": "ng-multi-selector",
-  "version": "1.0.2",
-  "description": "Webpack integrated. Template is used instead of templateUrl.",
+  "version": "1.0.3",
+  "description": "Updated readme.md",
   "main": "ng-multi-selector.directive.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
