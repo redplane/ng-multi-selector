@@ -1,26 +1,133 @@
-var path = require('path');
-var webpack = require('webpack');
-var CleanWebpackPlugin = require('clean-webpack-plugin');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ngAnnotatePlugin = require('ng-annotate-webpack-plugin');
+const path = require('path');
+const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ngAnnotatePlugin = require('ng-annotate-webpack-plugin');
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
-// Resolve source code directory.
-var pathSourceCode = path.resolve(__dirname, 'src');
-var pathApplication = path.resolve(pathSourceCode, 'app');
-var pathDistribution = path.resolve(pathSourceCode, 'dist');
+// Import webpack settings.
+const settings = require('./webpack/webpack-setting');
+const options = {
+    clean: require('./webpack/clean-webpack.setting').get(__dirname),
+    copy: require('./webpack/copy-webpack.setting').get(__dirname)
+};
+
+// True if built is set to production mode.
+// False if built is set to development mode.
+let bProductionMode = false;
+
+// Get environment variable.
+const env = process.env.NODE_ENV;
+if (env && 'production' === env.trim().toLowerCase()) {
+    bProductionMode = true;
+}
+
+// Build path options.
+const paths = {
+    source: settings.paths.getSource(__dirname),
+    app: settings.paths.getApplication(__dirname),
+    dist: settings.paths.getDist(__dirname)
+};
+
+/*
+* Plugins import.
+* */
+var plugins = [];
+
+/*
+* Enlist plugins which should be run on production mode.
+* */
+if (bProductionMode) {
+    // Clean fields before publishing packages.
+    plugins.push(new CleanWebpackPlugin(options.clean.paths, options.clean.options));
+
+    //Automatically add annotation to angularjs modules.
+    // Bundling can affect module initialization.
+    plugins.push(new ngAnnotatePlugin({add: true}));
+
+    // Bundle source files.
+    plugins.push(new webpack.optimize.UglifyJsPlugin({
+        compress: {warnings: true}
+    }));
+}
+
+/*
+* Not in production mode
+* */
+if (!bProductionMode) {
+    // Require original index file.
+    let browserSyncPlugin = new BrowserSyncPlugin({
+        // browse to http://localhost:3000/ during development,
+        // ./public directory is being served
+        host: 'localhost',
+        port: 8000,
+        files: [
+            path.resolve(paths.source, 'index.html')
+        ],
+        server: {
+            baseDir: [
+                paths.dist
+            ]
+        }
+    });
+
+    // Push plugins into list.
+    plugins.push(browserSyncPlugin);
+}
+
+/*
+* Enlist default plugins.
+* */
+// Copy files.
+plugins.push(new CopyWebpackPlugin(options.copy));
+
+// Using bluebird promise instead of native promise.
+plugins.push(new webpack.ProvidePlugin({
+    Promise: 'bluebird'
+}));
+
+
+//Using this plugin to split source code into chunks
+//This is for improving loading process.
+plugins.push(new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor',
+    minChunks: Infinity
+}));
+
+//Automatically inject chunks into html files.
+plugins.push(new HtmlWebpackPlugin({
+    template: path.resolve(paths.source, 'index.html'),
+    chunksSortMode: function (a, b) {
+        //let order = ['app','angular-plugins', 'jquery-plugins'];
+        const order = ['vendor', 'app'];
+        return order.indexOf(a.names[0]) - order.indexOf(b.names[0]);
+    }
+}));
 
 /*
 * Module export.
 * */
 module.exports = {
-    context: pathSourceCode,
+    context: settings.paths.getSource(__dirname),
     entry: {
-        'vendor': ['jquery', 'angular', 'angular-route', '@uirouter/angularjs', 'bootstrap'],
-        'app': path.resolve(pathApplication, 'app.js')
+        'vendor': ['jquery', 'bootstrap', 'admin-lte',
+            'angular', '@uirouter/angularjs', 'angular-block-ui', 'angular-toastr',
+            'angular-translate', 'angular-translate-loader-static-files', 'bluebird'],
+        'app': path.resolve(paths.app, 'app.js')
     },
     module: {
         rules: [
+            {
+                test: require.resolve('jquery'),
+                use: [{
+                    loader: 'expose-loader',
+                    options: 'jQuery'
+                }, {
+                    loader: 'expose-loader',
+                    options: '$'
+                }]
+            },
             {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader']
@@ -42,74 +149,13 @@ module.exports = {
             }
         ]
     },
-    plugins: [
-        new CleanWebpackPlugin(
-            [path.resolve(pathSourceCode, 'dist')], {
-            // Absolute path to your webpack root folder (paths appended to this)
-            // Default: root of your package
-            root: __dirname,
-
-            // Write logs to console.
-            verbose: true,
-
-            // Use boolean "true" to test/emulate delete. (will not remove files).
-            // Default: false - remove files
-            dry: false,
-
-            // If true, remove files on recompile.
-            // Default: false
-            watch: false,
-
-            // Instead of removing whole path recursively,
-            // remove all path's content with exclusion of provided immediate children.
-            // Good for not removing shared files from build directories.
-            exclude: ['index.html'],
-
-            // allow the plugin to clean folders outside of the webpack root.
-            // Default: false - don't allow clean folder outside of the webpack root
-            allowExternal: false
-        }),
-        new CopyWebpackPlugin([
-            {
-                from: path.resolve(pathApplication, 'assets'),
-                to: path.resolve(pathDistribution, 'assets')
-            },
-            {
-                from : path.resolve(pathApplication, 'html-templates'),
-                to: path.resolve(pathDistribution, 'html-templates')
-            }
-        ], {
-            ignore: ['index.html']
-        }),
-        new ngAnnotatePlugin({
-            add: true
-            // other ng-annotate options here
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            }
-        }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor',
-            minChunks: Infinity
-        }),
-        new HtmlWebpackPlugin({
-            template: path.resolve(pathApplication, 'index.html'),
-            chunksSortMode: function (a, b) {
-                //let order = ['app','angular-plugins', 'jquery-plugins'];
-                var order = ['vendor', 'app'];
-                return order.indexOf(a.names[0]) - order.indexOf(b.names[0]);
-            }
-        }),
-        new webpack.ProvidePlugin({
-            $: "jquery",
-            jQuery: "jquery",
-            'Rx': 'rx'
-        })
-    ],
+    plugins: plugins,
     output: {
-        path: pathDistribution,
+        path: path.resolve(paths.dist),
         filename: '[name].js'
     }
 };
+
+
+// Return module configurations.
+return module.exports;

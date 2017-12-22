@@ -1,16 +1,17 @@
-var path = require('path');
-var webpack = require('webpack');
-var CleanWebpackPlugin = require('clean-webpack-plugin');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-var NodeExternals = require('webpack-node-externals');
-var MergeIntoSingleFilePlugin = require('webpack-merge-and-include-globally');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const path = require('path');
+const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const NodeExternals = require('webpack-node-externals');
+const MergeIntoSingleFilePlugin = require('webpack-merge-and-include-globally');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ngAnnotatePlugin = require('ng-annotate-webpack-plugin');
 
 // Resolve source code directory.
-var pathSourceCode = path.resolve(__dirname, 'src');
-var pathDirective = path.resolve(__dirname, 'src/app/directives');
-var pathNgMultiSelector = path.resolve(pathDirective, 'ng-multi-selector');
-var pathDistribution = path.resolve(pathSourceCode, 'plugin-dist');
+const pathSourceCode = path.resolve(__dirname, 'src');
+const pathDirective = path.resolve(__dirname, 'src/app/directives');
+const pathNgMultiSelector = path.resolve(pathDirective, 'ng-multi-selector');
+const pathDistribution = path.resolve(pathSourceCode, 'plugin-dist');
 
 /*
 * Module export.
@@ -88,6 +89,7 @@ module.exports = {
                 // Default: false - don't allow clean folder outside of the webpack root
                 allowExternal: false
             }),
+        new ngAnnotatePlugin({add: true}),
         new MergeIntoSingleFilePlugin({
             files: {
                 'ng-multi-selector.min.js': [
