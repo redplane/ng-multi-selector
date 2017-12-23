@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html lang="en" ng-app="ngMultiSelectorSite" ng-controller="ngMultiSelectorSiteController"
+      class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html lang="en" ng-app="ngMultiSelectorSite" ng-controller="ngMultiSelectorSiteController"
+      class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html lang="en" ng-app="ngMultiSelectorSite" ng-controller="ngMultiSelectorSiteController"
+      class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" ng-app="ngMultiSelectorSite" ng-controller="ngMultiSelectorSiteController" class="no-js">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>ng-multi-selector</title>
+
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="bower_components/admin-lte/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="bower_components/admin-lte/dist/css/skins/skin-blue.min.css">
+
+    <link rel="stylesheet" href="plugins/ng-multi-selector/ng-multi-selector.css">
+</head>
+<body class="{{model.layoutClass}}">
+<ui-view></ui-view>
+</body>
+</html>
+
+<!--JQuery & its plugins-->
+<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="bower_components/admin-lte/dist/js/adminlte.min.js"></script>
+<script type="text/javascript" src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/rxjs@5.5.6/bundles/Rx.min.js"></script>
+
+<!--Angular & plugins-->
+<script type="text/javascript" src="bower_components/angular/angular.js"></script>
+<script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script type="text/javascript" src="plugins/ng-multi-selector/ng-multi-selector.js"></script>
+
+<!--Angular app-->
+<script type="text/javascript" src="app.js"></script>
+
+<!--Angular constant-->
+<script type="text/javascript" src="constants/url-states.constant.js"></script>
+
+<!--Angular services-->
+<script type="text/javascript" src="services/storage.service.js"></script>
+<script type="text/javascript" src="services/customer.service.js"></script>
+
+<!--Angular directives-->
+<script type="text/javascript" src="directives/navigation-bar/navigation-bar.js"></script>
+<script type="text/javascript" src="directives/side-bar/side-bar.js"></script>
+
+
+<!--Angular controllers-->
+<script type="text/javascript" src="modules/shared/authorize-layout/authorize-layout.controller.js"></script>
+<script type="text/javascript" src="modules/shared/unauthorize-layout/unauthorize-layout.controller.js"></script>
+<script type="text/javascript" src="app.controller.js"></script>
+<script type="text/javascript" src="modules/demo/demo.controller.js"></script>
+<script type="text/javascript" src="modules/demo/zero-configuration/zero-configuration.controller.js"></script>
+<script type="text/javascript" src="modules/demo/with-key-property/with-key-property.controller.js"></script>
+
+<!--Angular routes-->
+<script type="text/javascript" src="modules/shared/authorize-layout/authorize-layout.route.js"></script>
+<script type="text/javascript" src="modules/shared/unauthorize-layout/unauthorize-layout.route.js"></script>
+<script type="text/javascript" src="modules/demo/demo.route.js"></script>
+<script type="text/javascript" src="modules/demo/zero-configuration/zero-configuration.route.js"></script>
+<script type="text/javascript" src="modules/demo/with-key-property/with-key-property.route.js"></script>
