@@ -16,7 +16,6 @@ ngModule.config(
         $locationProvider.hashPrefix('!');
 
         // Get demo page.
-        var urlStateDemo = urlStates.demo;
-        var urlStateZeroConfiguration = urlStates
-        $urlRouterProvider.otherwise(urlStates.demo.url);
+        var urlStateZeroConfiguration = urlStates.demo.zeroConfiguration;
+        $urlRouterProvider.otherwise(urlStateZeroConfiguration.url);
     });

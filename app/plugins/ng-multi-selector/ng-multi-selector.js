@@ -7,10 +7,10 @@ angular.module('ngMultiSelector', [])
     .directive('ngMultiSelector', function () {
         return {
             restrict: 'E',
-            // templateUrl: function(tElement, tAttrs) {
-            //     return tAttrs.templateUrl || 'ng-multi-selector.html';
-            // },
-            templateUrl: '/plugins/ng-multi-selector/ng-multi-selector.html',
+            templateUrl: function(tElement, tAttrs) {
+                return tAttrs.templateUrl || 'ng-multi-selector.html';
+            },
+            // templateUrl: '/plugins/ng-multi-selector/ng-multi-selector.html',
             transclude: true,
             replace: false,
             require: 'ngModel',

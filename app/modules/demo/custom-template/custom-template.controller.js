@@ -1,7 +1,7 @@
 "use strict";
 
 var ngModule = angular.module('ngMultiSelectorSite');
-ngModule.controller('withKeyPropertyController',
+ngModule.controller('customTemplateController',
     function ($scope, customerService) {
         //#region Methods
 

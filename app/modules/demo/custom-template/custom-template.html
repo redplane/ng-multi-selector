@@ -12,7 +12,12 @@
                                        display-property="'email'"
                                        value-property="'id'"
                                        key-property="'id'"
-                                       ng-model="chosenCustomers"></ng-multi-selector>
+                                       custom-item-template="true"
+                                       ng-model="chosenCustomers">
+                        <a href="javascript:void(0);">
+                            <b>{{item.firstName}}</b> <span>{{item.lastName}}</span>
+                        </a>
+                    </ng-multi-selector>
                 </div>
             </div>
 

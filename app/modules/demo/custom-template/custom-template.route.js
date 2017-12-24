@@ -11,17 +11,17 @@ ngModule.config(
 
         var urlStateDemo = urlStates.demo;
         var urlAuthorizeLayout = urlStates.shared.authorizeLayout;
-        var urlStateWithKeyProperty = urlStateDemo.withKeyProperty;
+        var urlStateCustomTemplate = urlStateDemo.customTemplate;
 
         //#endregion
 
         //#region State registration
 
         // Basic initialization.
-        $stateProvider.state(urlStateWithKeyProperty.name, {
-            url: urlStateWithKeyProperty.url,
-            templateUrl: '/modules/demo/with-key-property/with-key-property.html',
-            controller: 'withKeyPropertyController',
+        $stateProvider.state(urlStateCustomTemplate.name, {
+            url: urlStateCustomTemplate.url,
+            templateUrl: '/modules/demo/custom-template/custom-template.html',
+            controller: 'customTemplateController',
             parent: urlAuthorizeLayout.name
         });
 

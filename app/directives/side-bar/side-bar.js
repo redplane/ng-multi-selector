@@ -10,6 +10,7 @@ ngModule.directive('sideBar', function () {
         link: function (scope, element, attrs, controller) {
         },
         controller: function ($timeout,
+                              $state,
                               $scope, urlStates) {
 
             //#region Properties
@@ -17,13 +18,31 @@ ngModule.directive('sideBar', function () {
             // Url state constant reflection.
             $scope.urlStates = urlStates;
 
+            // State service reflection.
+            $scope.$state = $state;
+
             //#endregion
 
             //#region Methods
 
             /*
-                * Initiate treeview.
-                * */
+            * Check whether user is in demo page or not.
+            * */
+            $scope.bIsInDemoPage = function(){
+                var urlStateDemos = [urlStates.demo.zeroConfiguration.name, urlStates.demo.customTemplate.name, urlStates.demo.withKeyProperty.name];
+                var items = urlStateDemos.filter(function(x){
+                    return $state.includes(x);
+                });
+
+                if (items == null || items.length < 1)
+                    return false;
+
+                return true;
+            };
+
+            /*
+            * Initiate treeview.
+            * */
             $timeout(function(){
                 $('ul[data-widget="tree"]').tree();
             }, 0);
