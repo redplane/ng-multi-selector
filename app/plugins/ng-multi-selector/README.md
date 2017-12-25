@@ -8,6 +8,9 @@ Description:
 
 Online demo can be found [here](http://ng-multi-selector.bitballoon.com/#!/demo/):
 
+#### Dependencies.
+- rxjs 5 (Can be found [here](https://github.com/ReactiveX/rxjs))
+
 #### Basic implementation.
 ```javascript
 <ng-multi-selector  items="customers"
