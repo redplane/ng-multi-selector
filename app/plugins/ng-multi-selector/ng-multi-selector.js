@@ -62,6 +62,7 @@ angular.module('ngMultiSelector', [])
                             }
                         } else {
                             scope.chosenItems = value;
+                            ngModel.$setViewValue(null);
                         }
 
                     }, true);
