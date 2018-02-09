@@ -10,7 +10,6 @@ angular.module('ngMultiSelector', [])
             templateUrl: function(tElement, tAttrs) {
                 return tAttrs.templateUrl || 'ng-multi-selector.html';
             },
-            // templateUrl: '/plugins/ng-multi-selector/ng-multi-selector.html',
             transclude: true,
             replace: false,
             require: 'ngModel',
@@ -18,6 +17,7 @@ angular.module('ngMultiSelector', [])
                 items: '=?', // List of item which should be used for displayed in ng-multi-selector.
                 keyProperty: '=', // Name of property which is used for define the selected item.
                 displayProperty: '=', // Which property should be used for display in ng-multi-selector.
+                valueProperty: '=', // Which property should be used for value selection.
                 ngDisabled: '=',// Whether directive should be disabled or not.
                 placeholderTitle: '=', // Text which should be displayed on title place holder.
                 placeholderSearch: '=', // Text which should be displayed on drop-down list search box.
@@ -109,8 +109,11 @@ angular.module('ngMultiSelector', [])
             controller: function ($scope, $element, $timeout) {
                 //#region Properties
 
-                // Chosen items in multi selector.
+                // Chosen items in ng-multi-selector.
                 $scope.chosenItems = [];
+
+                // Chosen values in ng-multi-selector.
+                $scope.chosenValues = [];
 
                 //#endregion
 
@@ -125,6 +128,9 @@ angular.module('ngMultiSelector', [])
                     $scope.instance = this;
                 };
 
+                /*
+                * Callback which is raised when search box is initialized.
+                * */
                 $scope.initSearchBox = function () {
                     $timeout(function(){
                         // Find search box.
