@@ -17,7 +17,6 @@ angular.module('ngMultiSelector', [])
                 items: '=?', // List of item which should be used for displayed in ng-multi-selector.
                 keyProperty: '=', // Name of property which is used for define the selected item.
                 displayProperty: '=', // Which property should be used for display in ng-multi-selector.
-                valueProperty: '=', // Which property should be used for value selection.
                 ngDisabled: '=',// Whether directive should be disabled or not.
                 placeholderTitle: '=', // Text which should be displayed on title place holder.
                 placeholderSearch: '=', // Text which should be displayed on drop-down list search box.
