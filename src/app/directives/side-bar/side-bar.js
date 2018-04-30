@@ -1,5 +1,5 @@
 'use strict';
-var ngSideBarTemplate = require('./side-bar.directive.html');
+var ngSideBarTemplate = require('./side-bar.html');
 
 module.exports = function(ngModule){
     ngModule.directive('sideBar', function () {

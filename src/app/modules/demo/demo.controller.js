@@ -39,7 +39,8 @@ module.exports = function (ngModule) {
         * Event which will be emitted when keyword is entered.
         * */
         $scope.getApiItems = function(keyword){
-            var szMessage = 'Key word has been emitted: ' + keyword;
+            let szMessage = 'Key word has been emitted: ' + keyword;
+
             // Initiate a new message.
             $scope.messages.push(szMessage);
         };

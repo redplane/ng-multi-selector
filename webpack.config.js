@@ -1,109 +1,28 @@
 const path = require('path');
-const webpack = require('webpack');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ngAnnotatePlugin = require('ng-annotate-webpack-plugin');
-const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+
+// Get webpack rule configuration.
+let webpackRuleOption = require('./webpack/rule-webpack.setting');
+
+// Get webpack plugin configuration.
+let webpackPluginOption = require('./webpack/plugins');
 
 // Import webpack settings.
 const settings = require('./webpack/webpack-setting');
-const options = {
-    clean: require('./webpack/clean-webpack.setting').get(__dirname),
-    copy: require('./webpack/copy-webpack.setting').get(__dirname)
-};
+
+// Get environment variable.
+let env = process.env.NODE_ENV;
 
 // True if built is set to production mode.
 // False if built is set to development mode.
-let bProductionMode = false;
-
-// Get environment variable.
-const env = process.env.NODE_ENV;
-if (env && 'production' === env.trim().toLowerCase()) {
-    bProductionMode = true;
-}
+let bProductionMode = env && 'production' === env.trim().toLowerCase();
 
 // Build path options.
 const paths = {
+    root: __dirname,
     source: settings.paths.getSource(__dirname),
     app: settings.paths.getApplication(__dirname),
     dist: settings.paths.getDist(__dirname)
 };
-
-/*
-* Plugins import.
-* */
-var plugins = [];
-
-/*
-* Enlist plugins which should be run on production mode.
-* */
-if (bProductionMode) {
-    // Clean fields before publishing packages.
-    plugins.push(new CleanWebpackPlugin(options.clean.paths, options.clean.options));
-
-    //Automatically add annotation to angularjs modules.
-    // Bundling can affect module initialization.
-    plugins.push(new ngAnnotatePlugin({add: true}));
-
-    // Bundle source files.
-    plugins.push(new webpack.optimize.UglifyJsPlugin({
-        compress: {warnings: true}
-    }));
-}
-
-/*
-* Not in production mode
-* */
-if (!bProductionMode) {
-    // Require original index file.
-    let browserSyncPlugin = new BrowserSyncPlugin({
-        // browse to http://localhost:3000/ during development,
-        // ./public directory is being served
-        host: 'localhost',
-        port: 8000,
-        files: [
-            path.resolve(paths.source, 'index.html')
-        ],
-        server: {
-            baseDir: [
-                paths.dist
-            ]
-        }
-    });
-
-    // Push plugins into list.
-    plugins.push(browserSyncPlugin);
-}
-
-/*
-* Enlist default plugins.
-* */
-// Copy files.
-plugins.push(new CopyWebpackPlugin(options.copy));
-
-// Using bluebird promise instead of native promise.
-plugins.push(new webpack.ProvidePlugin({
-    Promise: 'bluebird'
-}));
-
-
-//Using this plugin to split source code into chunks
-//This is for improving loading process.
-plugins.push(new webpack.optimize.CommonsChunkPlugin({
-    name: 'vendor',
-    minChunks: Infinity
-}));
-
-//Automatically inject chunks into html files.
-plugins.push(new HtmlWebpackPlugin({
-    template: path.resolve(paths.source, 'index.html'),
-    chunksSortMode: function (a, b) {
-        //let order = ['app','angular-plugins', 'jquery-plugins'];
-        const order = ['vendor', 'app'];
-        return order.indexOf(a.names[0]) - order.indexOf(b.names[0]);
-    }
-}));
 
 /*
 * Module export.
@@ -111,48 +30,37 @@ plugins.push(new HtmlWebpackPlugin({
 module.exports = {
     context: settings.paths.getSource(__dirname),
     entry: {
-        'vendor': ['jquery', 'bootstrap', 'admin-lte',
-            'angular', '@uirouter/angularjs', 'angular-block-ui', 'angular-toastr',
-            'angular-translate', 'angular-translate-loader-static-files', 'bluebird'],
+        'jQueryVendors': ['jquery', 'bootstrap', 'admin-lte', 'bluebird'],
+        'angularVendors': ['angular', '@uirouter/angularjs', 'angular-block-ui', 'angular-toastr',
+            'angular-translate', 'angular-translate-loader-static-files'],
         'app': path.resolve(paths.app, 'app.js')
     },
-    module: {
-        rules: [
-            {
-                test: require.resolve('jquery'),
-                use: [{
-                    loader: 'expose-loader',
-                    options: 'jQuery'
-                }, {
-                    loader: 'expose-loader',
-                    options: '$'
-                }]
-            },
-            {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader']
-            },
-            {
-                test: /\.(png|jpg|gif|woff|woff2|eot|ttf|svg)$/,
-                use: [
-                    {
-                        loader: 'url-loader',
-                        options: {
-                            limit: 8192
-                        }
-                    }
-                ]
-            },
-            {
-                test: /\.html$/, // Only .html files
-                loader: 'html-loader' // Run html loader
+    optimization: {
+        runtimeChunk: 'single',
+        splitChunks: {
+            chunks: 'all',
+            cacheGroups: {
+                default: {
+                    enforce: true,
+                    priority: 1
+                },
+                vendors: {
+                    test: /[\\/]node_modules[\\/]/,
+                    priority: 2,
+                    name: 'vendors',
+                    enforce: true,
+                    chunks: 'async'
+                }
             }
-        ]
+        }
     },
-    plugins: plugins,
+    module: {
+        rules: webpackRuleOption.get()
+    },
+    plugins: webpackPluginOption.get(bProductionMode, paths),
     output: {
         path: path.resolve(paths.dist),
-        filename: '[name].js'
+        filename: '[name].[hash].js'
     }
 };
 

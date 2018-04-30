@@ -1,5 +1,5 @@
 'use strict';
-var ngNavigationBarTemplate = require('./navigation-bar.directive.html');
+var ngNavigationBarTemplate = require('./navigation-bar.html');
 
 module.exports = function(ngModule){
   ngModule.directive('navigationBar', function(){

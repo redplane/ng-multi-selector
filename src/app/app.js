@@ -4,34 +4,33 @@
 require('bootstrap/dist/css/bootstrap.min.css');
 
 // Declare src level module which depends on views, and modules
-var angular = require('angular');
+let angular = require('angular');
 require('@uirouter/angularjs');
-require('./directives/ng-multi-selector/index');
+require('./directives/ng-multi-selector');
 
 // Initialize module.
-var ngModule = angular.module('ngApp',
+let ngModule = angular.module('ngApp',
     [
-        'ngRoute',
         'ui.router',
         'ng-multi-selector'
     ])
     .config(
-        function ($locationProvider, $stateProvider, $routeProvider, urlStates) {
+        function ($locationProvider, $urlRouterProvider, $stateProvider, urlStates) {
             $locationProvider.hashPrefix('!');
-            $routeProvider.otherwise({redirectTo: urlStates.demo.url});
+            $urlRouterProvider.otherwise(function($injector, $location){
+               let $state = $injector.get('$state');
+               if (!$state)
+                   return;
+
+               $state.go(urlStates.demo.name);
+            });
         });
 
 // Import constants.
-require('./constants/index')(ngModule);
+require('./constants')(ngModule);
 
 // Import services.
-require('./services/storage.service')(ngModule);
-require('./services/customer.service')(ngModule);
+require('./services')(ngModule);
 
 // Import sub-modules.
-require('./modules/demo/index')(ngModule);
-require('./modules/shared/index')(ngModule);
-
-// Import route configs.
-require('./modules/demo/routes')(ngModule);
-require('./modules/shared/routes')(ngModule);
+require('./modules')(ngModule);

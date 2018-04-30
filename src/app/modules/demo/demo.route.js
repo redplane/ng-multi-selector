@@ -1,7 +1,7 @@
 'use strict';
 
 // Templates import.
-var ngDemoTemplate = require('./demo.html');
+let ngModuleHtml = require('./demo.html');
 
 module.exports = function(ngModule){
     /*
@@ -15,7 +15,7 @@ module.exports = function(ngModule){
             // Basic initialization.
             $stateProvider.state(urlStates.demo.name, {
                 url: urlStates.demo.url,
-                template: ngDemoTemplate,
+                template: ngModuleHtml,
                 controller: 'demoController',
                 parent: 'authorize'
             });
