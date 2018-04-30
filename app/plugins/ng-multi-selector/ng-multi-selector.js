@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ng-multi-selector', [])
+angular.module('ngMultiSelector', [])
     .run(function ($templateCache) {
         $templateCache.put('ng-multi-selector.html', '<div class="dropdown" ng-init="init()"> <div class="input-group ng-multi-selector"> <div class="dropdown-toggle" aria-haspopup="true" aria-expanded="false" data-toggle="{{ngDisabled ? \'\' : \'dropdown\'}}"> <input class="form-control ng-multi-selector-title-box" readonly="readonly" ng-disabled="ngDisabled" value="{{getTitle()}}"> </div><span ng-if="isClearButtonAvailable" class="input-group-addon" ng-click="clear()"> <span class="glyphicon glyphicon-remove"></span> </span> <span class="input-group-addon dropdown-toggle" aria-haspopup="true" aria-expanded="false" data-toggle="{{ngDisabled ? \'\' : \'dropdown\'}}"> <span class="caret"></span> </span> <ul class="dropdown-menu" ng-click="clickDropDownMenu($event)" ng-if="!ngDisabled"> <li ng-if="isSearchBoxAvailable"> <div class="col-lg-12"> <div class="form-group"> <div class="input-group"> <input class="form-control ng-multi-selector-search-box" placeholder="{{placeholderSearch}}" ng-model="model.keyword" ng-init="initSearchBox()" maxlength="{{maxlength}}"> <span class="input-group-addon"> <span class="glyphicon glyphicon-search"></span> </span> </div></div></div></li><li ng-if="!customItemTemplate" ng-repeat="item in items | limitTo: limitItemAmount" ng-click="selectItem(item)" ng-class="{\'{{getActiveClass()}}\' : getItemSelected(item) !==-1}"> <a href="javascript:void(0);">{{getItemDisplay(item)}}</a> </li><li ng-if="customItemTemplate" ng-repeat="item in items | limitTo: limitItemAmount" ng-click="selectItem(item)" ng-class="{\'{{getActiveClass()}}\': getItemSelected(item) !==-1}" inject> </li></ul> </div></div>');
     })
@@ -15,8 +15,8 @@ angular.module('ng-multi-selector', [])
             require: 'ngModel',
             scope: {
                 items: '=?', // List of item which should be used for displayed in ng-multi-selector.
+                keyProperty: '=', // Name of property which is used for define the selected item.
                 displayProperty: '=', // Which property should be used for display in ng-multi-selector.
-                valueProperty: '=',// Which property of item should be bound to model.
                 ngDisabled: '=',// Whether directive should be disabled or not.
                 placeholderTitle: '=', // Text which should be displayed on title place holder.
                 placeholderSearch: '=', // Text which should be displayed on drop-down list search box.
@@ -61,6 +61,7 @@ angular.module('ng-multi-selector', [])
                             }
                         } else {
                             scope.chosenItems = value;
+                            ngModel.$setViewValue(null);
                         }
 
                     }, true);
@@ -80,17 +81,21 @@ angular.module('ng-multi-selector', [])
                     // Find item index.
                     var iIndex = -1;
 
+                    // Get item value.
+                    var itemValue = item;
+
                     if (scope.chosenItems)
-                        iIndex = scope.chosenItems.indexOf(item);
+                        iIndex = scope.chosenItems.indexOf(itemValue);
                     else
                         scope.chosenItems = [];
 
                     if (iIndex === -1) {
-                        scope.chosenItems.push(item);
+                        scope.chosenItems.push(itemValue);
                         ngModel.$setViewValue(scope.chosenItems);
                         return;
                     }
 
+                    // Item has been selected before. Remove it from the selected one.
                     scope.chosenItems.splice(iIndex, 1);
                     if (!scope.chosenItems || scope.chosenItems.length < 1)
                         scope.chosenItems = null;
@@ -103,8 +108,11 @@ angular.module('ng-multi-selector', [])
             controller: function ($scope, $element, $timeout) {
                 //#region Properties
 
-                // Chosen items in multi selector.
+                // Chosen items in ng-multi-selector.
                 $scope.chosenItems = [];
+
+                // Chosen values in ng-multi-selector.
+                $scope.chosenValues = [];
 
                 //#endregion
 
@@ -119,6 +127,9 @@ angular.module('ng-multi-selector', [])
                     $scope.instance = this;
                 };
 
+                /*
+                * Callback which is raised when search box is initialized.
+                * */
                 $scope.initSearchBox = function () {
                     $timeout(function(){
                         // Find search box.
@@ -136,29 +147,12 @@ angular.module('ng-multi-selector', [])
                                     return x.trim();
                                 return x;
                             })
-                            .debounce(iInterval)
+                            .debounceTime(iInterval)
                             .distinctUntilChanged()
                             .subscribe(function (x) {
                                 $scope.ngSearchItems({keyword: x});
                             });
                     });
-                };
-
-                /**
-                 * Generate loop command.
-                 */
-                $scope.loop = function () {
-                    var szCommand = 'item[valueProperty] as item[displayProperty] for item in items';
-                    if ($scope.valueProperty)
-                        szCommand = szCommand.replace('[valueProperty]', '[\'' + $scope.valueProperty + '\']');
-                    else
-                        szCommand = szCommand.replace('[valueProperty]', '');
-
-                    if ($scope.displayProperty)
-                        szCommand = szCommand.replace('[displayProperty]', '[\'' + $scope.displayProperty + '\']');
-                    else
-                        szCommand = szCommand.replace('[displayProperty', '');
-                    return szCommand;
                 };
 
                 /*
@@ -179,10 +173,15 @@ angular.module('ng-multi-selector', [])
                     if (!$scope.chosenItems)
                         return -1;
 
-                    // Value property has been specified.
-                    if ($scope.valueProperty)
-                        return $scope.chosenItems.indexOf(item[$scope.valueProperty]);
+                    // Key property has been specified.
+                    if ($scope.keyProperty) {
+                        var items = $scope.chosenItems.filter(function(x){
+                           return x[$scope.keyProperty] === item[$scope.keyProperty];
+                        });
+                        return (items && items.length > 0) ? 0 : -1;
+                    }
 
+                    // Value property has been specified.
                     return $scope.chosenItems.indexOf(item);
                 };
 
