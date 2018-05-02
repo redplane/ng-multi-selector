@@ -1,5 +1,5 @@
 // Import library.
-let settings = require('./webpack-setting');
+let settings = require('./paths');
 
 exports = module.exports = {
     /*

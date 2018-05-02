@@ -3,16 +3,22 @@
 // Style import.
 require('bootstrap/dist/css/bootstrap.min.css');
 
+// Import plugin css.
+require('./plugins/ng-multi-selector/ng-multi-selector.css');
+
+// Import jquery plugins.
+require('jquery');
+
 // Declare src level module which depends on views, and modules
 let angular = require('angular');
 require('@uirouter/angularjs');
-require('./directives/ng-multi-selector');
+require('./plugins/ng-multi-selector');
 
 // Initialize module.
 let ngModule = angular.module('ngApp',
     [
         'ui.router',
-        'ng-multi-selector'
+        'ngMultiSelector'
     ])
     .config(
         function ($locationProvider, $urlRouterProvider, $stateProvider, urlStates) {

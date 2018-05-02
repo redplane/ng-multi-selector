@@ -7,7 +7,7 @@ let webpackRuleOption = require('./webpack/rule-webpack.setting');
 let webpackPluginOption = require('./webpack/plugins');
 
 // Import webpack settings.
-const settings = require('./webpack/webpack-setting');
+const settings = require('./webpack/paths');
 
 // Get environment variable.
 let env = process.env.NODE_ENV;

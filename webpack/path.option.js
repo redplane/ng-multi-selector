@@ -1,5 +1,5 @@
 // Libary import.
-let path = require('path');
+const path = require('path');
 
 // Initiate paths.
 let paths = {};
