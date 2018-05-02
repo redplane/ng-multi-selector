@@ -1,0 +1,19 @@
+/*Multi selector drop-down menu.*/
+.ng-multi-selector .dropdown-menu {
+    width: 100%
+}
+
+/*Multi selector title box.*/
+input.ng-multi-selector-title-box {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ng-multi-selector-title-box:not(disabled) {
+    background-color: white !important;
+}
+
+.ng-multi-selector-title-box:disabled {
+    background-color: #eee !important;
+}
