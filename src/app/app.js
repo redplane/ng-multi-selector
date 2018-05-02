@@ -13,12 +13,14 @@ require('jquery');
 let angular = require('angular');
 require('@uirouter/angularjs');
 require('./plugins/ng-multi-selector');
+require('angular-messages');
 
 // Initialize module.
 let ngModule = angular.module('ngApp',
     [
         'ui.router',
-        'ngMultiSelector'
+        'ngMultiSelector',
+        'ngMessages'
     ])
     .config(
         function ($locationProvider, $urlRouterProvider, $stateProvider, urlStates) {

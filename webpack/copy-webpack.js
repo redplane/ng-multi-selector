@@ -1,8 +1,5 @@
 // Import libraries.
-const path = require('webpack/paths');
-
-// Import settings.
-const settings = require('./paths');
+const path = require('path');
 
 exports = module.exports = {
 

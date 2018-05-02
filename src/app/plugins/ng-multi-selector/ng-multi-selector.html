@@ -5,7 +5,7 @@
             <input class="form-control ng-multi-selector-title-box"
                    readonly="readonly" ng-disabled="ngDisabled"
                    value="{{getTitle()}}"></div>
-        <span ng-if="isClearButtonAvailable"
+        <span ng-if="ngIsClearButtonAvailable"
               class="input-group-addon"
               ng-click="clear()">
             <span class="glyphicon glyphicon-remove"></span>
@@ -18,13 +18,16 @@
         <ul class="dropdown-menu"
             ng-click="clickDropDownMenu($event)"
             ng-if="!ngDisabled">
-            <li ng-if="isSearchBoxAvailable">
+            <li ng-if="ngIsSearchBoxAvailable">
                 <div class="col-lg-12">
                     <div class="form-group">
                         <div class="input-group">
                             <input class="form-control ng-multi-selector-search-box"
-                                   placeholder="{{placeholderSearch}}" ng-model="model.keyword"
-                                   ng-init="initSearchBox()" maxlength="{{maxlength}}"> <span
+                                   placeholder="{{ngPlaceholderSearch}}"
+                                   ng-model="model.keyword"
+                                   ng-model-options="{debounce: options.debounceTime}"
+                                   ng-change="fnEmitSearchKeyword($event)"
+                                   maxlength="{{maxlength}}"> <span
                                 class="input-group-addon">
                             <span class="glyphicon glyphicon-search"></span>
                         </span>
@@ -32,17 +35,14 @@
                     </div>
                 </div>
             </li>
-            <li ng-if="!customItemTemplate"
-                ng-repeat="item in items | limitTo: limitItemAmount"
-                ng-click="selectItem(item)"
-                ng-class="{'{{getActiveClass()}}' : getItemSelected(item) !==-1}">
+
+            <!--Item list-->
+            <li ng-repeat="item in ngItemsSource | limitTo: ngLimitItemAmount"
+                ng-click="fnSelectItem(item)"
+                ng-class="{'{{fnGetActiveClass()}}': getItemSelected(item) !==-1}"
+                ng-inject="ngCustomItemTemplate">
                 <a href="javascript:void(0);">{{getItemDisplay(item)}}</a>
             </li>
-            <li ng-if="customItemTemplate"
-                ng-repeat="item in items | limitTo: limitItemAmount"
-                ng-click="selectItem(item)"
-                ng-class="{'{{getActiveClass()}}': getItemSelected(item) !==-1}"
-                inject></li>
         </ul>
     </div>
 </div>

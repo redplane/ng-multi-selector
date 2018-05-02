@@ -1,6 +1,4 @@
 // Import library.
-let settings = require('./paths');
-
 exports = module.exports = {
     /*
     * Get configuration options.

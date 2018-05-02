@@ -1,7 +1,7 @@
 const path = require('path');
 // const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-// const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const NodeExternals = require('webpack-node-externals');
 // const MergeIntoSingleFilePlugin = require('webpack-merge-and-include-globally');
 // const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -10,19 +10,17 @@ const webpackRules = require('./webpack/rule-webpack.setting'); // Import webpac
 //#region Resolve paths
 
 // Import webpack setting.
-const oPathOption = require('./webpack/path.option');
+const oPathOption = require('./webpack/path.option').paths;
 let oPaths = {
     src: oPathOption.getSource(__dirname),
     app: oPathOption.getApplication(__dirname),
     dist: oPathOption.getDist(__dirname),
 };
 
-oPaths['plugin'] = path.resolve(oPaths.src, 'plugins');
+oPaths['plugin'] = path.resolve(oPaths.app, 'plugins');
 oPaths['ngMultiSelector'] = path.resolve(oPaths.plugin, 'ng-multi-selector');
 
 //#endregion
-
-
 
 //#region Plugins
 
@@ -66,13 +64,30 @@ const ngAnnotatePlugin = require('ng-annotate-webpack-plugin');
 plugins.push(new ngAnnotatePlugin({add: true}));
 //#endregion
 
+//#region Copy webpack plugin
+
+// List of items to be copied.
+let copiedItems = ['index.js', 'ng-multi-selector.css', 'ng-multi-selector.html', 'package.json', 'README.md'];
+let absolutePathCopiedItems = [];
+
+for (let copiedItemIndex = 0; copiedItemIndex < copiedItems.length; copiedItemIndex++){
+    absolutePathCopiedItems.push({
+        from: path.resolve(oPaths.ngMultiSelector, copiedItems[copiedItemIndex]),
+        to: oPaths.dist
+    });
+}
+let webpackCopyPluginOption = new CopyWebpackPlugin(absolutePathCopiedItems);
+plugins.push(webpackCopyPluginOption);
+
+//#endregion
+
 //#endregion
 
 /*
 * Module export.
 * */
 module.exports = {
-    context: pathSourceCode,
+    context: oPaths.src,
     entry: {
         'index': path.resolve(oPaths.ngMultiSelector, 'index.js')
     },

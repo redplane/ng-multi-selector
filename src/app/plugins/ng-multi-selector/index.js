@@ -10,7 +10,7 @@ ngModule
         $templateCache.put('ng-multi-selector.html', ngModuleHtml);
     });
 
-require('./directives/inject')(ngModule);
+require('./directives/ng-inject')(ngModule);
 require('./directives/ng-multi-selector')(ngModule);
 
 

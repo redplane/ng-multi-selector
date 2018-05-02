@@ -1,6 +1,10 @@
 'use strict';
 
 module.exports = function (ngModule) {
+
+    // Default debounce time.
+    const defaultDebounceTime = 400;
+
     ngModule.directive('ngMultiSelector', function () {
         return {
             restrict: 'E',
@@ -11,21 +15,21 @@ module.exports = function (ngModule) {
             replace: false,
             require: 'ngModel',
             scope: {
-                items: '=?', // List of item which should be used for displayed in ng-multi-selector.
-                keyProperty: '=', // Name of property which is used for define the selected item.
-                displayProperty: '=', // Which property should be used for display in ng-multi-selector.
+                ngItemsSource: '=?', // List of item which should be used for displayed in ng-multi-selector.
+                ngKeyProperty: '=', // Name of property which is used for define the selected item.
+                ngDisplayProperty: '=', // Which property should be used for display in ng-multi-selector.
                 ngDisabled: '=',// Whether directive should be disabled or not.
-                placeholderTitle: '=', // Text which should be displayed on title place holder.
-                placeholderSearch: '=', // Text which should be displayed on drop-down list search box.
+                ngPlaceholderTitle: '@', // Text which should be displayed on title place holder.
+                ngPlaceholderSearch: '@', // Text which should be displayed on drop-down list search box.
                 maxlength: '=?',// Search box maximum length.
-                separator: '=', // Separator which should be used to separate selected items.
-                autoClose: '=', // Whether drop-down list should automatically closed or manually when an item has been clicked.
-                limitItemAmount: '=',// Number of items which should be shown up in drop-down list.
-                isClearButtonAvailable: '=',// Whether clear button is visible or not.
-                isSearchBoxAvailable: '=',//Whether search box is available or not.
-                interval: '=',// Search box de-bounced time.
-                customItemTemplate: '=',// Whether custom template is supported or not.
-                activeClass: '=?',// Class which will be added when item is active.
+                ngSeparator: '=', // Separator which should be used to separate selected items.
+                ngIsAutoClose: '=', // Whether drop-down list should automatically closed or manually when an item has been clicked.
+                ngLimitItemAmount: '=',// Number of items which should be shown up in drop-down list.
+                ngIsClearButtonAvailable: '=',// Whether clear button is visible or not.
+                ngIsSearchBoxAvailable: '=',//Whether search box is available or not.
+                ngInterval: '=',// Search box de-bounced time.
+                ngCustomItemTemplate: '=',// Whether custom template is supported or not.
+                ngActiveClass: '=?',// Class which will be added when item is active.
 
                 ngSearchItems: '&'//Raised when component wants to search for a keyword.
             },
@@ -33,35 +37,14 @@ module.exports = function (ngModule) {
 
                 //#region Properties
 
-                // Item has been selected before. Update the ng-model.
-                if (scope.item)
-                    ngModel.$setViewValue(scope.item);
+                // Directive options.
+                scope.options = {
+                    debounceTime: defaultDebounceTime
+                };
 
                 //#endregion
 
                 //#region Methods
-
-                /*
-                * Watch item for changes.
-                * */
-                scope.$watch(
-                    function () {
-                        return ngModel.$modelValue;
-                    },
-                    function (value) {
-                        if (value instanceof Array) {
-                            if (value.length < 1) {
-                                ngModel.$setViewValue(null);
-                                scope.chosenItems = null;
-                            } else {
-                                scope.chosenItems = value;
-                            }
-                        } else {
-                            scope.chosenItems = value;
-                            ngModel.$setViewValue(null);
-                        }
-
-                    }, true);
 
                 /*
                 * Clear chosen items from list.
@@ -74,7 +57,7 @@ module.exports = function (ngModule) {
                 /*
                 * Called when an item is selected.
                 * */
-                scope.selectItem = function (item) {
+                scope.fnSelectItem = function (item) {
                     // Find item index.
                     let iIndex = -1;
 
@@ -101,6 +84,49 @@ module.exports = function (ngModule) {
 
 
                 //#endregion
+
+                //#region Watchers
+
+                /*
+                * Watch item for changes.
+                * */
+                scope.$watch(
+                    function () {
+                        return ngModel.$modelValue;
+                    },
+                    function (value) {
+
+                        // Value is not a list.
+                        if (!(value instanceof Array)){
+                            scope.chosenItems = value;
+                            ngModel.$setViewValue(null);
+                            return;
+                        }
+
+                        // Empty array.
+                        if (value.length < 1) {
+                            ngModel.$setViewValue(null);
+                            scope.chosenItems = null;
+                            return;
+                        }
+                        scope.chosenItems = value;
+                    }, true);
+
+                /*
+                * Watch for interval changes.
+                * */
+                scope.$watch('ngInterval', function (oldValue, value) {
+                    if (!value || value < defaultDebounceTime)
+                        return;
+
+                    // Value didn't change.
+                    if (oldValue === value)
+                        return;
+
+                    scope.options.debounceTime = value;
+                });
+
+                //#endregion
             },
             controller: function ($scope, $element, $timeout) {
                 //#region Properties
@@ -125,34 +151,6 @@ module.exports = function (ngModule) {
                 };
 
                 /*
-                * Callback which is raised when search box is initialized.
-                * */
-                $scope.initSearchBox = function () {
-                    $timeout(function () {
-                        // Find search box.
-                        let oSearchBox = $element[0].getElementsByClassName('ng-multi-selector-search-box')[0];
-
-                        // Find interval.
-                        let iInterval = $scope.interval;
-                        if (!iInterval || iInterval < 400)
-                            iInterval = 400;
-
-                        // Rx.Observable.fromEvent(oSearchBox, 'keyup')
-                        //     .pluck('target', 'value')
-                        //     .map(function (x) {
-                        //         if (x)
-                        //             return x.trim();
-                        //         return x;
-                        //     })
-                        //     .debounceTime(iInterval)
-                        //     .distinctUntilChanged()
-                        //     .subscribe(function (x) {
-                        //         $scope.ngSearchItems({keyword: x});
-                        //     });
-                    });
-                };
-
-                /*
                 * Contains internal information of directive.
                 * */
                 $scope.model = {
@@ -171,9 +169,9 @@ module.exports = function (ngModule) {
                         return -1;
 
                     // Key property has been specified.
-                    if ($scope.keyProperty) {
+                    if ($scope.ngKeyProperty) {
                         let items = $scope.chosenItems.filter(function (x) {
-                            return x[$scope.keyProperty] === item[$scope.keyProperty];
+                            return x[$scope.ngKeyProperty] === item[$scope.ngKeyProperty];
                         });
                         return (items && items.length > 0) ? 0 : -1;
                     }
@@ -181,7 +179,6 @@ module.exports = function (ngModule) {
                     // Value property has been specified.
                     return $scope.chosenItems.indexOf(item);
                 };
-
 
                 /*
                  Get multi-selector title.
@@ -194,8 +191,8 @@ module.exports = function (ngModule) {
                         // Display property has been defined.
                         szResult = $scope.chosenItems
                             .map(function (x) {
-                                if ($scope.displayProperty && $scope.displayProperty.length > 0) {
-                                    return x[$scope.displayProperty];
+                                if ($scope.ngDisplayProperty && $scope.ngDisplayProperty.length > 0) {
+                                    return x[$scope.ngDisplayProperty];
                                 }
                                 return x;
                             })
@@ -210,9 +207,9 @@ module.exports = function (ngModule) {
                 * Get separator of selected items.
                 * */
                 $scope.getSeparator = function () {
-                    if (!$scope.separator || !$scope.separator.length < 1)
+                    if (!$scope.ngSeparator || !$scope.ngSeparator.length < 1)
                         return ' - ';
-                    return $scope.separator;
+                    return $scope.ngSeparator;
                 };
 
                 /*
@@ -224,7 +221,7 @@ module.exports = function (ngModule) {
                     if (!event)
                         return;
 
-                    if (!$scope.autoClose)
+                    if (!$scope.ngIsAutoClose)
                         event.stopPropagation();
                 };
 
@@ -232,23 +229,31 @@ module.exports = function (ngModule) {
                 * Get item display
                 * */
                 $scope.getItemDisplay = function (item) {
-                    if (!$scope.displayProperty || $scope.displayProperty.length < 1)
+                    if (!$scope.ngDisplayProperty || $scope.ngDisplayProperty.length < 1)
                         return item;
 
-                    return item[$scope.displayProperty];
+                    return item[$scope.ngDisplayProperty];
                 };
 
                 /*
                 * Get active class.
                 * */
-                $scope.getActiveClass = function () {
+                $scope.fnGetActiveClass = function () {
                     // Active class is not defined.
-                    if (!$scope.activeClass) {
+                    if (!$scope.ngActiveClass) {
                         return 'active';
                     }
 
-                    return $scope.activeClass;
+                    return $scope.ngActiveClass;
                 };
+
+                /*
+                * Event which is raised when keyword is entered to search box.
+                * */
+                $scope.fnEmitSearchKeyword = function () {
+                    $scope.ngSearchItems({keyword: $scope.model.keyword});
+                }
+
                 //#endregion
             }
         };
