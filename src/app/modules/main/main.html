@@ -1,0 +1,100 @@
+<h1 id="ng-multi-selector">ng-multi-selector</h1>
+<p>Description:</p>
+<ul>
+    <li>This component provides a control which helps user to find records in service using keyword.</li>
+    <li>More than one item can be selected.</li>
+    <li>AngularJS supported.</li>
+</ul>
+<p>Online demo can be found <a href="http://ng-multi-selector.bitballoon.com/#!/demo/">here</a>:</p>
+<h2 id="installation-">Installation.</h2>
+<ul>
+    <li><strong>NPM</strong>: <code>npm install ng-multi-selector</code></li>
+</ul>
+<h2 id="basic-implementation-">Basic implementation.</h2>
+<pre><code class="lang-javascript">&lt;ng-multi-selector  ng-<span class="hljs-built_in">items</span>-<span
+        class="hljs-keyword">source</span>=<span class="hljs-string">"customers"</span>
+                    ng-<span class="hljs-keyword">display</span>-property=<span class="hljs-string">"'email'"</span>
+                    ng-model=<span class="hljs-string">"chosenCustomers"</span>&gt;
+&lt;/ng-multi-selector&gt;
+</code></pre>
+<h4 id="custom-item-template-implementation-">Custom item template implementation.</h4>
+<pre><code class="lang-javascript"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">ng-multi-selector</span>  <span
+        class="hljs-attr">ng-items-source</span>=<span class="hljs-string">"customers"</span>
+                    <span class="hljs-attr">ng-is-search-box-available</span>=<span class="hljs-string">"true"</span>
+                    <span class="hljs-attr">ng-display-property</span>=<span class="hljs-string">"'email'"</span>
+                    <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"chosenCustomers"</span>
+                    <span class="hljs-attr">ng-custom-item-template</span>=<span
+            class="hljs-string">"true"</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span
+                                class="hljs-string">"javascript:void(0);"</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">b</span>&gt;</span></span><span
+        class="hljs-template-variable">{{item.firstName}}</span><span class="xml"><span class="hljs-tag">&lt;/<span
+        class="hljs-name">b</span>&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span></span><span
+        class="hljs-template-variable">{{item.lastName}}</span><span class="xml"><span class="hljs-tag">&lt;/<span
+        class="hljs-name">span</span>&gt;</span>
+                        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ng-multi-selector</span>&gt;</span></span>
+</code></pre>
+<h4 id="keyword-search-event-emitter-">Keyword search event emitter.</h4>
+<pre><code class="lang-javascript"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">ng-multi-selector</span>  <span
+        class="hljs-attr">ng-items-source</span>=<span class="hljs-string">"customers"</span>
+                    <span class="hljs-attr">ng-is-search-box-available</span>=<span class="hljs-string">"true"</span>
+                    <span class="hljs-attr">ng-display-property</span>=<span class="hljs-string">"'email'"</span>
+                    <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"chosenCustomers"</span>
+                    <span class="hljs-attr">ng-custom-item-template</span>=<span class="hljs-string">"true"</span>
+                    <span class="hljs-attr">ng-search-items</span>=<span
+            class="hljs-string">"getApiItems(keyword)"</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span
+                                class="hljs-string">"javascript:void(0);"</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">b</span>&gt;</span></span><span
+        class="hljs-template-variable">{{item.firstName}}</span><span class="xml"><span class="hljs-tag">&lt;/<span
+        class="hljs-name">b</span>&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span></span><span
+        class="hljs-template-variable">{{item.lastName}}</span><span class="xml"><span class="hljs-tag">&lt;/<span
+        class="hljs-name">span</span>&gt;</span>
+                        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ng-multi-selector</span>&gt;</span></span>
+</code></pre>
+<h3 id="options-">Options:</h3>
+<ul>
+    <li><p><code>ng-items-source</code> (string): List of item which should be used for displayed in ng-multi-selector.
+    </p>
+    </li>
+    <li><p><code>ng-display-property</code> (string): Which property should be used for display in ng-multi-selector.
+    </p>
+    </li>
+    <li><p><code>ng-key-property</code> (string): Which property should be used to know whether item has been selected
+        or not.</p>
+    </li>
+    <li><p><code>ng-disabled</code> (boolean): Whether directive should be disabled or not.</p>
+    </li>
+    <li><p><code>ng-placeholder-title</code> (string): Text which should be displayed on title place holder.</p>
+    </li>
+    <li><p><code>ng-placeholder-search</code> (string): Text which should be displayed on drop-down list search box.</p>
+    </li>
+    <li><p><code>maxlength</code> (number) : Search box maximum length.</p>
+    </li>
+    <li><p><code>ng-separator</code> (string) : Separator which should be used to separate selected items.</p>
+    </li>
+    <li><p><code>ng-is-auto-close</code> (boolean): Whether drop-down list should automatically closed or manually when
+        an item has been clicked.</p>
+    </li>
+    <li><p><code>ng-limit-item-amount</code> (number): Number of items which should be shown up in drop-down list.</p>
+    </li>
+    <li><p><code>ng-is-clear-button-available</code> (boolean): Whether clear button is visible or not.</p>
+    </li>
+    <li><p><code>ng-is-search-box-available</code> (boolean): Whether search box is available or not.</p>
+    </li>
+    <li><p><code>ng-limit-item-selection</code> (number): Maximum number of items which can be selected.</p>
+    </li>
+    <li><p><code>ng-interval</code> (number): Amount of time in milliseconds which search event should be emitted.</p>
+    </li>
+    <li><p><code>ng-custom-item-template</code> (string): Template name of drop-down items.</p>
+    </li>
+    <li><p><code>ng-active-class</code> (string): Class which is used when an item is selected (default: &#39;active&#39;).
+    </p>
+    </li>
+</ul>
+<h3 id="events-">Events:</h3>
+<ul>
+    <li><code>ng-search-items (keyword: string)</code>: Event which is raised when search event is emitted.</li>
+</ul>

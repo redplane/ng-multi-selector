@@ -6,6 +6,9 @@ require('bootstrap/dist/css/bootstrap.min.css');
 // Import plugin css.
 require('./plugins/ng-multi-selector/ng-multi-selector.css');
 
+// Import app style.
+require('./app.scss');
+
 // Import jquery plugins.
 require('jquery');
 
@@ -23,14 +26,18 @@ let ngModule = angular.module('ngApp',
         'ngMessages'
     ])
     .config(
-        function ($locationProvider, $urlRouterProvider, $stateProvider, urlStates) {
+        function ($locationProvider, $urlRouterProvider, $stateProvider, uiStateConstant) {
+
+            // Redirect to master layout.
+            let uiStateMain = uiStateConstant.main;
+
             $locationProvider.hashPrefix('!');
             $urlRouterProvider.otherwise(function($injector, $location){
                let $state = $injector.get('$state');
                if (!$state)
                    return;
 
-               $state.go(urlStates.demo.name);
+               $state.go(uiStateMain.name);
             });
         });
 
