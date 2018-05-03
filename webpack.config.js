@@ -1,4 +1,5 @@
-const path = require('path');
+module.exports = env => {
+    const path = require('path');
 
 // Get webpack rule configuration.
 let webpackRuleOption = require('./webpack/rule-webpack.setting');
@@ -10,11 +11,9 @@ let webpackPluginOption = require('./webpack/plugins');
 const settings = require('./webpack/path.option');
 
 // Get environment variable.
-let env = process.env.NODE_ENV;
-
 // True if built is set to production mode.
 // False if built is set to development mode.
-let bProductionMode = env && 'production' === env.trim().toLowerCase();
+let bProductionMode = env.production;
 
 // Build path options.
 const paths = {
@@ -27,7 +26,7 @@ const paths = {
 /*
 * Module export.
 * */
-module.exports = {
+return {
     context: settings.paths.getSource(__dirname),
     entry: {
         'jQueryVendors': ['jquery', 'bootstrap', 'admin-lte', 'bluebird'],
@@ -62,8 +61,6 @@ module.exports = {
         path: path.resolve(paths.dist),
         filename: '[name].[hash].js'
     }
-};
+}
 
-
-// Return module configurations.
-return module.exports;
+}

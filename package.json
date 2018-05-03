@@ -31,7 +31,7 @@
   },
   "scripts": {
     "start": "webpack --watch --mode=development",
-    "build": "webpack --mode=production",
+    "build": "webpack --mode=production --env.production=true",
     "build:plugin": "webpack --mode=production --config webpack.plugin.config.js"
   },
   "dependencies": {
