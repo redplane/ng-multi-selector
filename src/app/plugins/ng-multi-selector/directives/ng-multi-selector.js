@@ -97,7 +97,7 @@ module.exports = function (ngModule) {
                     function (value) {
 
                         // Value is not a list.
-                        if (!(value instanceof Array)){
+                        if (!(value instanceof Array)) {
                             scope.chosenItems = value;
                             ngModel.$setViewValue(null);
                             return;

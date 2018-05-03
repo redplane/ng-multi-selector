@@ -3,18 +3,26 @@
         <div class="dropdown-toggle" aria-haspopup="true" aria-expanded="false"
              data-toggle="{{ngDisabled ? '' : 'dropdown'}}">
             <input class="form-control ng-multi-selector-title-box"
-                   readonly="readonly" ng-disabled="ngDisabled"
+                   readonly="readonly"
+                   placeholder="{{ngPlaceholderSearch}}"
+                   ng-disabled="ngDisabled"
                    value="{{getTitle()}}"></div>
+
+        <!--Clear button-->
         <span ng-if="ngIsClearButtonAvailable"
               class="input-group-addon"
               ng-click="clear()">
             <span class="glyphicon glyphicon-remove"></span>
         </span>
+
+        <!--Drop-down arrow-->
         <span class="input-group-addon dropdown-toggle"
               aria-haspopup="true" aria-expanded="false"
               data-toggle="{{ngDisabled ? '' : 'dropdown'}}">
             <span class="caret"></span>
         </span>
+
+        <!--Drop-down menu-->
         <ul class="dropdown-menu"
             ng-click="clickDropDownMenu($event)"
             ng-if="!ngDisabled">

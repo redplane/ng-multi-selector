@@ -30,6 +30,11 @@ module.exports = function(ngModule){
             customTemplate:{
                 name: 'multi-custom-template',
                 url: '/multi-custom-template'
+            },
+
+            formValidation:{
+                name: 'form-validation',
+                url: '/form-validation'
             }
         },
 

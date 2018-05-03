@@ -4,7 +4,7 @@
 * Service declaration.
 * */
 module.exports = function(ngModule){
-    ngModule.service('customerService', function ($http, storageService) {
+    ngModule.service('$customer', function ($http, storageService) {
         //#region Properties
 
         //#endregion
@@ -14,7 +14,7 @@ module.exports = function(ngModule){
         /*
         * Get data from local data source.
         * */
-        this.getLocalItems = function () {
+        this.loadCustomers = function () {
 
             // Find list of stored customers.
             let customers = storageService.getCustomers();
@@ -24,11 +24,11 @@ module.exports = function(ngModule){
 
             return $http.get('/assets/data/customers.json')
                 .then(function (x) {
-                    var result = x.data;
+                    let result = x.data;
                     if (!result)
                         return [];
 
-                    var customers = result.records;
+                    let customers = result.records;
                     storageService.initCustomers(customers);
                     return customers;
                 });

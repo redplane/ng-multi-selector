@@ -2,7 +2,7 @@
 
 module.exports = function (ngModule) {
     ngModule.controller('customTemplateController',
-        function ($scope, customerService) {
+        function ($scope, $customer) {
             //#region Methods
 
             /*
@@ -30,9 +30,10 @@ module.exports = function (ngModule) {
             $scope.init = function () {
 
                 // Get customers list.
-                customerService.getLocalItems().then(function (x) {
-                    $scope.customers = x;
-                });
+                $customer.loadCustomers()
+                    .then(x => {
+                        $scope.customers = x;
+                    });
             };
 
             /*

@@ -8,11 +8,10 @@
                     <h3 class="box-title">Control</h3>
                 </div>
                 <div class="box-body">
-                    <ng-multi-selector items="customers"
-                                       display-property="'email'"
-                                       value-property="'id'"
-                                       key-property="'id'"
-                                       custom-item-template="true"
+                    <ng-multi-selector ng-items-source="customers"
+                                       ng-display-property="'email'"
+                                       ng-key-property="'id'"
+                                       ng-custom-item-template="true"
                                        ng-model="chosenCustomers">
                         <a href="javascript:void(0);">
                             <b>{{item.firstName}}</b> <span>{{item.lastName}}</span>

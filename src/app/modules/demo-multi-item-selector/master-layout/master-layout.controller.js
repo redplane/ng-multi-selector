@@ -14,7 +14,8 @@ module.exports = function (ngModule) {
             $scope.pStateMaps = [
                 {name: $scope.uiStateDemo.dataSource.name, title: 'Data source'},
                 {name: $scope.uiStateDemo.zeroConfiguration.name, title: 'Zero configuration'},
-                {name: $scope.uiStateDemo.customTemplate.name, title: 'Custom template'}
+                {name: $scope.uiStateDemo.customTemplate.name, title: 'Custom template'},
+                {name: $scope.uiStateDemo.formValidation.name, title: 'Form validation'}
             ];
 
             //#endregion
@@ -26,12 +27,11 @@ module.exports = function (ngModule) {
             * */
             $scope.getTitle = function () {
                 let szCurrentStateName = $state.current.name;
-                console.log(szCurrentStateName);
                 let pFilteredItems = $scope.pStateMaps.filter(item => {
                     return szCurrentStateName === item.name;
                 });
 
-                if (!pFilteredItems)
+                if (!pFilteredItems || pFilteredItems.length < 1)
                     return '';
 
                 return pFilteredItems[0].title;

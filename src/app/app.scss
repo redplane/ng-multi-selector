@@ -1,3 +1,19 @@
 body {
   margin: 20px;
 }
+
+ul.validation-summary {
+  li {
+    color: red;
+    font-weight: bold;
+  }
+}
+
+ul.treeview-menu {
+  li.active {
+    a {
+      text-decoration: underline;
+      font-style: italic;
+    }
+  }
+}

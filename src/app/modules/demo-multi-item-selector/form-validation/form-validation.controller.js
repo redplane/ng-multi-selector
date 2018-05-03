@@ -1,8 +1,8 @@
 "use strict";
 
 module.exports = function (ngModule) {
-    ngModule.controller('withKeyPropertyController',
-        function ($scope, customerService) {
+    ngModule.controller('formValidationController',
+        function ($scope, $customer) {
             //#region Methods
 
             /*
@@ -30,9 +30,10 @@ module.exports = function (ngModule) {
             $scope.init = function () {
 
                 // Get customers list.
-                customerService.getLocalItems().then(function (x) {
-                    $scope.customers = x;
-                });
+                $customer.loadCustomers()
+                    .then(x => {
+                        $scope.customers = x;
+                    });
             };
 
             /*

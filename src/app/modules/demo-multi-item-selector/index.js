@@ -9,4 +9,5 @@ module.exports = function (ngModule) {
     require('./data-source')(ngModule);
     require('./custom-template')(ngModule);
     require('./zero-configuration')(ngModule);
+    require('./form-validation')(ngModule);
 };
