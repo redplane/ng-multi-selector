@@ -6,11 +6,15 @@ module.exports = function(ngModule){
     ngModule.config(function($stateProvider, uiStateConstant){
 
         let uiStateMasterLayout = uiStateConstant.masterLayout;
-        let uiStateMultiMasterLayout = uiStateConstant.multi.masterLayout;
-        $stateProvider.state(uiStateMultiMasterLayout.name, {
-            abstract: true,
-            parent: uiStateMasterLayout,
-            template: ngModuleHtml
+        let uiStateDemo = uiStateConstant.demo;
+        let uiStateDemoMasterLayout = uiStateDemo.masterLayout;
+        let uiStateDemoZeroConfiguration = uiStateDemo.zeroConfiguration;
+
+        $stateProvider.state(uiStateDemoMasterLayout.name, {
+            parent: uiStateMasterLayout.name,
+            template: ngModuleHtml,
+            redirectTo: uiStateDemoZeroConfiguration.name,
+            controller: 'multiMasterLayoutController'
         });
     });
 };

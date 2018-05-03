@@ -23,9 +23,6 @@ ngModule.constant('urlStates', {
             name: 'demo-custom-template',
             url: '/custom-template'
         },
-
-        name: 'module-demo',
-        url: '/demo'
     },
 
     shared:{

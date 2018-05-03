@@ -3,6 +3,9 @@
 // Style import.
 require('bootstrap/dist/css/bootstrap.min.css');
 
+// Import font awesome.
+require('../../node_modules/font-awesome/css/font-awesome.css');
+
 // Import plugin css.
 require('./plugins/ng-multi-selector/ng-multi-selector.css');
 

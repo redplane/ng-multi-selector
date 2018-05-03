@@ -5,8 +5,27 @@
             ui-sref-active="active">
             <a href="javascript:void(0);">Introduction</a>
         </li>
-        <li role="presentation"><a href="#">Profile</a></li>
-        <li role="presentation"><a href="#">Messages</a></li>
+        <li role="presentation"
+            ui-sref="{{uiStateDemoMasterLayout.name}}"
+            ng-class="{'active': bIsInState(uiStateDemoMasterLayout.name)}">
+            <a href="javascript:void(0);">Demo</a>
+        </li>
+        <li>
+            <ul>
+                <li ui-sref="{{uiStateDemo.dataSource.name}}"
+                    ui-sref-active="active">
+                    <a href="javascript:void(0);">Data source</a>
+                </li>
+                <li ui-sref="{{uiStateDemo.zeroConfiguration.name}}"
+                    ui-sref-active="active">
+                    <a href="javascript:void(0);">Zero configuration</a>
+                </li>
+                <li ui-sref="{{uiStateDemo.customTemplate.name}}"
+                    ui-sref-active="active">
+                    <a href="javascript:void(0);">Custom template</a>
+                </li>
+            </ul>
+        </li>
     </ul>
 </div>
 

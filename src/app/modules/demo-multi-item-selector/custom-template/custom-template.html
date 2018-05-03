@@ -1,0 +1,102 @@
+<div ng-init="init()">
+
+    <!--Controls-->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Control</h3>
+                </div>
+                <div class="box-body">
+                    <ng-multi-selector items="customers"
+                                       display-property="'email'"
+                                       value-property="'id'"
+                                       key-property="'id'"
+                                       custom-item-template="true"
+                                       ng-model="chosenCustomers">
+                        <a href="javascript:void(0);">
+                            <b>{{item.firstName}}</b> <span>{{item.lastName}}</span>
+                        </a>
+                    </ng-multi-selector>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Configuration & selected items-->
+    <div class="row">
+        <!--Configuration-->
+        <div class="col-lg-6">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Configuration</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-responsive table-condensed">
+                        <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Value</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!--Items-->
+                        <tr>
+                            <td>
+                                <code>items</code>
+                            </td>
+                            <td>
+                                <span>customers</span>
+                            </td>
+                        </tr>
+                        <!--Display property-->
+                        <tr>
+                            <td>
+                                <code>display-property</code>
+                            </td>
+                            <td>
+                                <span>'email'</span>
+                            </td>
+                        </tr>
+                        <!--ng-model-->
+                        <tr>
+                            <td>
+                                <code>ng-model</code>
+                            </td>
+                            <td>
+                                <span>chosenCustomers</span>
+                            </td>
+                        </tr>
+                        <!--key-property-->
+                        <tr>
+                            <td>
+                                <code>key-property</code>
+                            </td>
+                            <td>
+                                <span>'id'</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!--Selected items-->
+        <div class="col-lg-6">
+            <div class="box box-info">
+                <div class="box-header">
+                    <h3 class="box-title">Selected items</h3>
+                </div>
+                <div class="box-body">
+                    <ul>
+                        <li ng-repeat="item in chosenCustomers">
+                            {{item | json}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

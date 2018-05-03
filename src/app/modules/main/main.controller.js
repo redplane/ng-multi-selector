@@ -1,5 +1,5 @@
 module.exports = function(ngModule){
-    ngModule.controller('mainController', function($scope, uiStateConstant){
+    ngModule.controller('mainController', function($scope, $state, uiStateConstant){
 
         //#region Properties
 

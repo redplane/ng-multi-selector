@@ -8,11 +8,16 @@ module.exports = function(ngModule){
             url: '/main'
         },
 
-        multi: {
+        demo: {
 
             masterLayout: {
                 name: 'multi-master-layout',
                 url: '/multi-master-layout'
+            },
+
+            dataSource:{
+                name: 'data-source',
+                url: '/data-source'
             },
 
             // Zero configuration.
