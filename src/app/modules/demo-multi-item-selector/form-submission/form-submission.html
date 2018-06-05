@@ -1,0 +1,110 @@
+<form name="f"
+      ng-init="init()"
+      novalidate>
+
+    <!--Controls-->
+    <div class="row">
+        <div class="col-lg-12">
+            <form name="f"
+                  class="box box-primary"
+                  novalidate
+                  ng-submit="ngOnFormSubmitted($event)">
+                <div class="box-header">
+                    <h3 class="box-title">Control</h3>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <ng-multi-selector name="selector"
+                                                   ng-items-source="customers"
+                                                   ng-display-property="'email'"
+                                                   ng-key-property="'id'"
+                                                   ng-model="chosenCustomers"
+                                                   ng-required="true">
+                                </ng-multi-selector>
+                            </div>
+
+                            <ul class="validation-summary"
+                                ng-if="f.$invalid && f.selector.$dirty"
+                                ng-messages="f.selector.$error">
+                                <li ng-message="required">Item is required</li>
+                            </ul>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <button type="submit">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <!--Configuration & selected items-->
+    <div class="row">
+        <!--Configuration-->
+        <div class="col-lg-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Configuration</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-responsive table-condensed">
+                        <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Value</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!--Items-->
+                        <tr>
+                            <td>
+                                <code>ng-items-source</code>
+                            </td>
+                            <td>
+                                <span>customers</span>
+                            </td>
+                        </tr>
+                        <!--Display property-->
+                        <tr>
+                            <td>
+                                <code>ng-display-property</code>
+                            </td>
+                            <td>
+                                <span>'email'</span>
+                            </td>
+                        </tr>
+                        <!--ng-model-->
+                        <tr>
+                            <td>
+                                <code>ng-model</code>
+                            </td>
+                            <td>
+                                <span>chosenCustomers</span>
+                            </td>
+                        </tr>
+                        <!--key-property-->
+                        <tr>
+                            <td>
+                                <code>ng-key-property</code>
+                            </td>
+                            <td>
+                                <span>'id'</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>

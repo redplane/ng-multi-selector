@@ -1,4 +1,4 @@
-module.exports = env => {
+module.exports = (argv, env) => {
     const path = require('path');
 
 // Get webpack rule configuration.

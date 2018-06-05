@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(ngModule){
+module.exports = function (ngModule) {
     ngModule.constant('uiStateConstant', {
 
         main: {
@@ -15,7 +15,7 @@ module.exports = function(ngModule){
                 url: '/multi-master-layout'
             },
 
-            dataSource:{
+            dataSource: {
                 name: 'data-source',
                 url: '/data-source'
             },
@@ -27,18 +27,23 @@ module.exports = function(ngModule){
             },
 
             // Custom template.
-            customTemplate:{
+            customTemplate: {
                 name: 'multi-custom-template',
                 url: '/multi-custom-template'
             },
 
-            formValidation:{
+            formValidation: {
                 name: 'form-validation',
                 url: '/form-validation'
+            },
+
+            formSubmission: {
+                name: 'form-submission',
+                url: '/form-submission'
             }
         },
 
-        masterLayout:{
+        masterLayout: {
             name: 'master-layout',
             url: '/master-layout'
         }
