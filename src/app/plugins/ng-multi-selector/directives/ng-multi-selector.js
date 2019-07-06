@@ -16,7 +16,7 @@ module.exports = function (ngModule) {
             require: 'ngModel',
             scope: {
                 ngItemsSource: '=?', // List of item which should be used for displayed in ng-multi-selector.
-                ngKeyProperty: '=', // Name of property which is used for define the selected item.
+                ngKeyProperty: '<', // Name of property which is used for define the selected item.
                 ngDisplayProperty: '=', // Which property should be used for display in ng-multi-selector.
                 ngDisabled: '=',// Whether directive should be disabled or not.
                 ngPlaceholderTitle: '@', // Text which should be displayed on title place holder.
@@ -64,22 +64,33 @@ module.exports = function (ngModule) {
                     // Get item value.
                     let itemValue = item;
 
-                    if (scope.chosenItems)
+                    if (scope.ngKeyProperty){
+                        itemValue = item[scope.ngKeyProperty];
+                    }
+
+                    if (scope.chosenItems) {
                         iIndex = scope.chosenItems.indexOf(itemValue);
-                    else
+                    }
+                    else {
                         scope.chosenItems = [];
+                    }
 
                     if (iIndex === -1) {
                         scope.chosenItems.push(itemValue);
                         ngModel.$setViewValue(scope.chosenItems);
+                        ngModel.$setDirty(true);
                         return;
                     }
 
                     // Item has been selected before. Remove it from the selected one.
                     scope.chosenItems.splice(iIndex, 1);
+
+                    // No item has been selected. Change to null.
                     if (!scope.chosenItems || scope.chosenItems.length < 1)
                         scope.chosenItems = null;
+
                     ngModel.$setViewValue(scope.chosenItems);
+                    ngModel.$setDirty(true);
                 };
 
 
@@ -109,6 +120,7 @@ module.exports = function (ngModule) {
                             scope.chosenItems = null;
                             return;
                         }
+
                         scope.chosenItems = value;
                     }, true);
 
@@ -168,15 +180,15 @@ module.exports = function (ngModule) {
                     if (!$scope.chosenItems)
                         return -1;
 
-                    // Key property has been specified.
-                    if ($scope.ngKeyProperty) {
-                        let items = $scope.chosenItems.filter(function (x) {
-                            return x[$scope.ngKeyProperty] === item[$scope.ngKeyProperty];
+                    // Value property has been specified.
+                    if ($scope.ngKeyProperty){
+                        let items = $scope.chosenItems.filter(function(x) {
+                            return x === item[$scope.ngKeyProperty];
                         });
-                        return (items && items.length > 0) ? 0 : -1;
+
+                        return (items && items.length > 0) ? 0: -1;
                     }
 
-                    // Value property has been specified.
                     return $scope.chosenItems.indexOf(item);
                 };
 
@@ -191,6 +203,11 @@ module.exports = function (ngModule) {
                         // Display property has been defined.
                         szResult = $scope.chosenItems
                             .map(function (x) {
+
+                                if ($scope.ngKeyProperty && $scope.ngKeyProperty.length > 0){
+                                    return x;
+                                }
+
                                 if ($scope.ngDisplayProperty && $scope.ngDisplayProperty.length > 0) {
                                     return x[$scope.ngDisplayProperty];
                                 }

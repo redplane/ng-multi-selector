@@ -18,15 +18,15 @@
                             <div class="form-group">
                                 <ng-multi-selector name="selector"
                                                    ng-items-source="customers"
+                                                   ng-key-property="'email'"
                                                    ng-display-property="'email'"
-                                                   ng-key-property="'id'"
                                                    ng-model="chosenCustomers"
                                                    ng-required="true">
                                 </ng-multi-selector>
                             </div>
 
                             <ul class="validation-summary"
-                                ng-if="f.$invalid && f.selector.$dirty"
+                                ng-if="(f.$submitted || f.selector.$dirty) && f.selector.$invalid"
                                 ng-messages="f.selector.$error">
                                 <li ng-message="required">Item is required</li>
                             </ul>
@@ -39,8 +39,14 @@
                         </div>
                     </div>
 
-
-
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <b>Selected item</b>
+                            <ul ng-repeat="item in chosenCustomers">
+                                <li>{{item}}</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </form>
 
